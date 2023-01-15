@@ -1,0 +1,37 @@
+#!/bin/bash
+# replace "application" with name of cli.
+__get_first_word()
+{
+    while read -r first rest; do
+        echo "$first"
+    done
+}
+
+_application()
+{
+    COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
+    local cur prev words cword split
+    local debug=0
+    _init_completion -s -n : || return
+
+    case $prev in
+        applic*) # replace with partial name
+            COMMANDS=$(application --raw list | __get_first_word )
+            COMPREPLY=(`compgen -W "$COMMANDS" -- "$cur"`)
+            return 0
+            ;;
+    esac
+
+    case $cur in
+        -*)
+            COMMANDS=$( application ${words[1]} --help | sed 's/[][]//g' | _parse_help - )
+            COMPREPLY=(`compgen -W "$COMMANDS" -- "$cur"`)
+            return
+            ;;
+        *)
+            _filedir
+            return
+            ;;
+    esac
+} &&
+complete -F _application -o nospace application
