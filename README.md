@@ -1,7 +1,7 @@
 # project-cli
+![Tests](https://github.com/surgiie/project-cli/actions/workflows/tests.yml/badge.svg)
 
 A php kanban style todo cli. 
-
 ## Install
 
 - `composer global require surgiie/project-cli`
@@ -37,3 +37,13 @@ project new:status "Done"
 Consider keeping this limitted to 3-5 statuses or however many statuses your screen/terminal size can render without impacting the board render from breaking to new lines.
 
 **Note**  You should create these order you wish to display them in board from left to right as the order of your board columns will be by `created_at` by default.
+
+## Create Task Tags
+
+Next, optionally create tags for your board tasks, for example, you may like to tag tasks by urgency:
+
+```bash
+project new:tag "urgent"
+project new:tag "not-urgent"
+```
+
