@@ -39,9 +39,7 @@ return [
     |
     */
 
-    'add' => [
-        \Intonate\TinkerZero\Console\TinkerZeroCommand::class
-    ],
+    'add' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -65,8 +63,16 @@ return [
         LaravelZero\Framework\Commands\BuildCommand::class,
         LaravelZero\Framework\Commands\RenameCommand::class,
         LaravelZero\Framework\Commands\TestMakeCommand::class,
+        Illuminate\Database\Console\Migrations\RefreshCommand::class,
+        Illuminate\Database\Console\Migrations\StatusCommand::class,
+        Illuminate\Database\Console\Migrations\ResetCommand::class,
+        Illuminate\Database\Console\Migrations\RollbackCommand::class,
+        Illuminate\Database\Console\Migrations\InstallCommand::class,
+        Illuminate\Database\Console\Migrations\FreshCommand::class,
+        Illuminate\Database\Console\Factories\FactoryMakeCommand::class,
+        Illuminate\Database\Console\Seeds\SeederMakeCommand::class,
+        Illuminate\Database\Console\Migrations\MigrateMakeCommand::class,
         \NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand::class,
-        \Laravel\Tinker\Console\TinkerCommand::class,
         LaravelZero\Framework\Commands\InstallCommand::class,
         Symfony\Component\Console\Command\DumpCompletionCommand::class,
         Symfony\Component\Console\Command\HelpCommand::class,

@@ -1,5 +1,9 @@
 <?php
 
+use Surgiie\Console\Command;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -13,33 +17,37 @@
 
 uses(Tests\TestCase::class)->in('Feature');
 
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
+uses()->beforeAll(function () {
+    Command::disableAsyncTask();
+})->in(__DIR__);
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
 
-/*
-|--------------------------------------------------------------------------
-| Functions
-|--------------------------------------------------------------------------
-|
-| While Pest is very powerful out-of-the-box, you may have some testing code specific to your
-| project that you don't want to repeat in every file. Here you can also expose helpers as
-| global functions to help you to reduce the number of lines of code in your test files.
-|
-*/
-
-function something()
+function fresh_project_dir(?string $name = "tests")
 {
-    // ..
+    $fs = new Filesystem;
+
+    $basePath = __DIR__.'/.project';
+    
+    putenv("PROJECT_CLI_BASE_PATH=$basePath");
+
+    $fs->deleteDirectory($basePath);
+    
+    @mkdir($basePath);
+    
+    if (! is_null($name)) {
+        @mkdir($basePath."/boards/$name", recursive: true);
+        touch($basePath."/boards/$name/database");
+        configure_board_database_connection($name);
+        Artisan::call("migrate");
+        file_put_contents($basePath."/default-board", $name);
+    }
+}
+
+function configure_board_database_connection(string $name)
+{
+    config([
+        'database.connections.board' => array_merge(config('database.connections.board'), [
+            'database' => project_path("boards/$name/database"),
+        ]),
+    ]);
 }

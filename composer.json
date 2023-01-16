@@ -1,11 +1,12 @@
 {
+    "name":"surgiie/project-cli",
+    "description": "A php kanban style todo cli.",
     "type": "project",
     "license": "MIT",
     "require": {
         "php": "^8.0",
-        "guzzlehttp/guzzle": "^7.4",
-        "illuminate/http": "^9.0",
-        "intonate/tinker-zero": "^1.2",
+        "illuminate/database": "^9.0",
+        "nunomaduro/laravel-console-menu": "^3.2",
         "surgiie/console": "^1.0.0"
     },
     "require-dev": {
@@ -19,7 +20,14 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "./app/helpers.php"
+        ]
+    },
+    "scripts": {
+        "test": "vendor/bin/pest tests -c phpunit.xml.dist",
+        "test-coverage": "export XDEBUG_MODE=coverage && vendor/bin/pest tests -c phpunit.xml.dist --coverage"
     },
     "autoload-dev": {
         "psr-4": {
