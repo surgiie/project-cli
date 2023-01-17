@@ -2,15 +2,15 @@
 
 namespace App\Commands;
 
-use Illuminate\Support\Str;
-use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
 
 class NewTagCommand extends BaseCommand
 {
     use WithValidation, WithTransformers;
+
     /**
      * The signature of the command.
      *
@@ -31,10 +31,10 @@ class NewTagCommand extends BaseCommand
         return array_merge(parent::requirements(), [
             function () {
                 $this->configureDatabaseConnection();
-            }
+            },
         ]);
     }
-    
+
     /**Transform inputs.*/
     public function transformers()
     {
@@ -47,12 +47,12 @@ class NewTagCommand extends BaseCommand
     public function rules()
     {
         return [
-            'name' => [function ($_, $name, $fail) {          
+            'name' => [function ($_, $name, $fail) {
                 $tag = DB::table('tags')->where('name', Str::kebab($name))->first();
                 if (! is_null($tag)) {
                     $fail("A tag '$name' already exists for this board.");
                 }
-            }]
+            }],
         ];
     }
 
@@ -61,14 +61,16 @@ class NewTagCommand extends BaseCommand
      */
     public function handle()
     {
-        $name =  $this->data->get('name');
+        $name = $this->data->get('name');
 
         $this->runTask("Create new task tag called $name", function () {
             $name = Str::kebab($givenValue = $this->data->get('name'));
 
             return DB::table('tags')->insert([
-                'name'=>$name,
+                'name' => $name,
                 'display' => $givenValue,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         });
 

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        if (! Schema::hasTable('metadata')) {
-            Schema::create('metadata', function (Blueprint $table) {
+        if (! Schema::hasTable('preferences')) {
+            Schema::create('preferences', function (Blueprint $table) {
                 $table->id();
                 $table->string('name')->unique();
                 $table->text('value');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('metadata');
+        Schema::dropIfExists('preferences');
     }
 };

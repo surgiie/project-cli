@@ -2,15 +2,15 @@
 
 namespace App\Commands;
 
-use Illuminate\Support\Str;
-use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
 
 class NewBoardCommand extends BaseCommand
 {
     use WithValidation, WithTransformers;
+
     /**
      * The signature of the command.
      *
@@ -25,25 +25,24 @@ class NewBoardCommand extends BaseCommand
      */
     protected $description = 'Create a new board.';
 
-     /**Transform inputs.*/
-     public function transformers()
-     {
-         return [
-             'name' => 'trim',
-         ];
-     }
+    /**Transform inputs.*/
+    public function transformers()
+    {
+        return [
+            'name' => 'trim',
+        ];
+    }
 
     public function rules()
     {
         return [
-            'name'=> [function($_, $name, $fail){
-                if(is_dir(project_path("boards/$name"))){
+            'name' => [function ($_, $name, $fail) {
+                if (is_dir(project_path("boards/$name"))) {
                     $fail("The project board '$name' already exists.");
                 }
-            }]
+            }],
         ];
     }
-
 
     /**
      * Execute the console command.
@@ -56,15 +55,13 @@ class NewBoardCommand extends BaseCommand
 
         $name = Str::kebab($this->data->get('name'));
 
-        $this->runTask("Create new project board $name", function () use($name){
-
+        $this->runTask("Create new project board called $name", function () use ($name) {
             @mkdir(project_path("boards/$name"));
 
             touch(project_path("boards/$name/database"));
         });
 
-        $this->runTask("Create $name board database", function () use($name){
-
+        $this->runTask("Create $name board database", function () use ($name) {
             $name = $this->data->get('name');
 
             $this->configureDatabaseConnection($name);
@@ -74,10 +71,10 @@ class NewBoardCommand extends BaseCommand
 
         $this->newLine();
 
-        $this->components->info("The $name project board created successfully.");
+        $this->components->info("The project board was created successfully.");
 
-        if(get_selected_board_name() === false){
-            $this->callSilently('select', ['name'=>$name]);
+        if (get_selected_board_name() === false) {
+            $this->callSilently('select', ['name' => $name]);
         }
     }
 }

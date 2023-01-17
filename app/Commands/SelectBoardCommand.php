@@ -4,10 +4,8 @@ namespace App\Commands;
 
 use Symfony\Component\Finder\Finder;
 
-
 class SelectBoardCommand extends BaseCommand
 {
-
     /**
      * The signature of the command.
      *
@@ -22,7 +20,6 @@ class SelectBoardCommand extends BaseCommand
      */
     protected $description = 'Select the default board for cli to use.';
 
-
     /**
      * Execute the console command.
      *
@@ -32,29 +29,27 @@ class SelectBoardCommand extends BaseCommand
     {
         $name = $this->data->get('name');
 
-
-        if (!is_dir(project_path("boards/$name"))) {
+        if (! is_dir(project_path("boards/$name"))) {
             $this->exit("The board '$name' does not exist");
         }
 
-
-        if (!$name) {
+        if (! $name) {
             $files = (new Finder())->directories()->in(project_path('boards'))->depth(0);
 
             $boards = [];
 
             foreach ($files as $file) {
-
                 $name = $file->getBaseName();
 
                 $boards[$name] = $name;
             }
 
-            $name = $this->menu("Select a board:", $boards)->open();
+            $name = $this->menu('Select a board:', $boards)->open();
         }
 
-        $task = $this->runTask("Save default board", function () use ($name) {
-            $defaultFile = project_path("default-board");
+        $task = $this->runTask('Save default board', function () use ($name) {
+            $defaultFile = project_path('default-board');
+
             return file_put_contents($defaultFile, $name) !== false;
         });
 

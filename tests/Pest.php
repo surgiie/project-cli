@@ -1,8 +1,8 @@
 <?php
 
-use Surgiie\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
+use Surgiie\Console\Command;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,25 +21,24 @@ uses()->beforeAll(function () {
     Command::disableAsyncTask();
 })->in(__DIR__);
 
-
-function fresh_project_dir(?string $name = "tests")
+function fresh_project_dir(?string $name = 'tests')
 {
     $fs = new Filesystem;
 
     $basePath = __DIR__.'/.project';
-    
+
     putenv("PROJECT_CLI_BASE_PATH=$basePath");
 
     $fs->deleteDirectory($basePath);
-    
+
     @mkdir($basePath);
-    
+
     if (! is_null($name)) {
         @mkdir($basePath."/boards/$name", recursive: true);
         touch($basePath."/boards/$name/database");
         configure_board_database_connection($name);
-        Artisan::call("migrate");
-        file_put_contents($basePath."/default-board", $name);
+        Artisan::call('migrate');
+        file_put_contents($basePath.'/default-board', $name);
     }
 }
 

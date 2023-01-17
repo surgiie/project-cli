@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Surgiie\Console\Concerns\WithTransformers;
@@ -89,11 +90,16 @@ class NewTaskCommand extends BaseCommand
         $description = $this->getOrAskForInput('description');
 
         $this->runTask('Create new task', function () use ($description) {
+            $dueDate = $this->data->get('due-date');
+
             return DB::table('tasks')->insert([
                 'title' => $this->data->get('title'),
                 'description' => $description,
+                'status' => Str::kebab($this->data->get('status')),
                 'tags' => implode(',', $this->data->get('tags', [])),
-                'due_date' => $this->data->get('due-date'),
+                'due_date' => $dueDate ? (new Carbon($dueDate))->toDateTimeString() : null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         });
 

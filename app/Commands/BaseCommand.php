@@ -3,8 +3,8 @@
 namespace App\Commands;
 
 use Illuminate\Support\Str;
-use Symfony\Component\Process\Process;
 use Surgiie\Console\Command as ConsoleCommand;
+use Symfony\Component\Process\Process;
 
 abstract class BaseCommand extends ConsoleCommand
 {
@@ -13,15 +13,15 @@ abstract class BaseCommand extends ConsoleCommand
     {
         return [
             function () {
-                if (!extension_loaded('sqlite3')) {
+                if (! extension_loaded('sqlite3')) {
                     return 'The sqlite3 php extension is required by this cli and is not loaded.';
                 }
-            }
+            },
         ];
     }
 
     /**Open a tmp file using the given editor binary string. */
-    protected function openTmpFile($existingContent = "")
+    protected function openTmpFile($existingContent = '')
     {
         $handle = tmpfile();
 
@@ -29,7 +29,7 @@ abstract class BaseCommand extends ConsoleCommand
 
         fwrite($handle, $existingContent);
 
-        $editor = getenv("PROJECT_CLI_EDITOR") ?: 'vim';
+        $editor = getenv('PROJECT_CLI_EDITOR') ?: 'vim';
         $process = new Process([$editor, $meta['uri']]);
 
         $process->setTty(true);
@@ -43,12 +43,12 @@ abstract class BaseCommand extends ConsoleCommand
     /**Configure the database connection for the current selected board. */
     protected function configureDatabaseConnection(string $name = '')
     {
-        if (!$name) {
+        if (! $name) {
             $name = get_selected_board_name();
         }
 
         if ($name === false) {
-            $this->exit("A board is not selected, please select one with: project select <board-name>");
+            $this->exit('A board is not selected, please select one with: project select <board-name>');
         }
 
         config([
@@ -57,6 +57,7 @@ abstract class BaseCommand extends ConsoleCommand
             ]),
         ]);
     }
+
     /**Normalize name to snake & uppercase.*/
     protected function normalizeToUpperSnakeCase(string $name)
     {

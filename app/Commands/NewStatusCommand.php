@@ -2,15 +2,15 @@
 
 namespace App\Commands;
 
-use Illuminate\Support\Str;
-use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
 
 class NewStatusCommand extends BaseCommand
 {
     use WithValidation, WithTransformers;
+
     /**
      * The signature of the command.
      *
@@ -24,7 +24,7 @@ class NewStatusCommand extends BaseCommand
      * @var string
      */
     protected $description = 'Create a new task status.';
-    
+
     /**Transform inputs.*/
     public function transformers()
     {
@@ -39,7 +39,7 @@ class NewStatusCommand extends BaseCommand
         return array_merge(parent::requirements(), [
             function () {
                 $this->configureDatabaseConnection();
-            }
+            },
         ]);
     }
 
@@ -47,12 +47,12 @@ class NewStatusCommand extends BaseCommand
     public function rules()
     {
         return [
-            'name' => [function ($_, $name, $fail) {          
+            'name' => [function ($_, $name, $fail) {
                 $status = DB::table('statuses')->where('name', Str::kebab($name))->first();
                 if (! is_null($status)) {
                     $fail("A status '$name' already exists for this board.");
                 }
-            }]
+            }],
         ];
     }
 
@@ -61,14 +61,16 @@ class NewStatusCommand extends BaseCommand
      */
     public function handle()
     {
-        $name =  $this->data->get('name');
+        $name = $this->data->get('name');
 
         $this->runTask("Create new task status called $name", function () {
             $name = Str::kebab($givenValue = $this->data->get('name'));
 
             return DB::table('statuses')->insert([
                 'name' => $name,
-                'display' => $givenValue
+                'display' => $givenValue,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         });
 

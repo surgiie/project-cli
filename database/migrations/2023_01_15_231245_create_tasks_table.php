@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        if(! Schema::hasTable('tasks')){
+        if (! Schema::hasTable('tasks')) {
             Schema::create('tasks', function (Blueprint $table) {
                 $table->id();
                 $table->string('title')->nullable();
+                $table->string('status');
                 $table->text('description');
-                $table->string("tags")->nullable();
+                $table->string('tags')->nullable();
                 $table->timestamp('due_date')->nullable();
                 $table->timestamps();
             });

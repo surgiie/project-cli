@@ -1,12 +1,16 @@
 # project-cli
+
 ![Tests](https://github.com/surgiie/project-cli/actions/workflows/tests.yml/badge.svg)
 
-A simple php kanban style todo cli built with [termwind](https://github.com/nunomaduro/termwind).
+A simple php kanban style todo cli.
+
+
 ## Install
 
 - `composer global require surgiie/project-cli`
 -  `sqlite` and the `sqlite3` extension should be installed as the cli stores all data within a `sqlite` database.
 
+**Note** - The cli relies on the `pctnl` extension which is not available on linux, but windows is still supported, install with the `--ignore-platform-reqs` if using windows.
 ## Create New Board
 
 To create a new board, run: `project new:board <board-name>`
@@ -18,12 +22,12 @@ This will also create the following sqlite database file: `~/.projects/boards/<b
 
 ## Set/Select Board
 
-Once you a board for the cli to work with, set the default board with `project select <board-name>`.
+To set the default board the cli will interact with, run: `project select <board-name>`.
 
 This allows the cli to know which board to interact with when running commands. 
 
 
-**Note** This will be done automatically on your first board creation. Use to switch between boards in future calls.
+**Note** This will be done automatically on your first board creation.
 
 ## Create Task Statuses
 
@@ -71,3 +75,18 @@ env to a non-terminal based editor since those terminal binaries would not hold 
 
 **Note** Any string value that is parsable by the [Carbon](https://github.com/briannesbitt/Carbon) library can be used here.
 
+
+### CLI Preferences:
+
+You may customize certain functionality or output using preferences stored in your `sqlite` database, for example to specify the order of the columns of your board:
+
+`project set "status-order" "Todo, Doing, Done"
+
+The cli will consume these preferences as set by the values stored in this table. 
+
+Below is a list of options that can be set:
+
+
+| Name   | Description   |  Example  |  Default |
+|---|---|---|---|
+| `status-order`   | The order of the statuses shown on the board.  |  `project set status-order "Todo,Doing,Done"` | N/A |
