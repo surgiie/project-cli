@@ -5,11 +5,12 @@ namespace App\Commands;
 use Illuminate\Support\Str;
 use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\DB;
+use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
 
 class NewStatusCommand extends BaseCommand
 {
-    use WithValidation;
+    use WithValidation, WithTransformers;
     /**
      * The signature of the command.
      *
@@ -23,6 +24,14 @@ class NewStatusCommand extends BaseCommand
      * @var string
      */
     protected $description = 'Create a new task status.';
+    
+    /**Transform inputs.*/
+    public function transformers()
+    {
+        return [
+            'name' => 'trim',
+        ];
+    }
 
     /**Command requirements.*/
     public function requirements()

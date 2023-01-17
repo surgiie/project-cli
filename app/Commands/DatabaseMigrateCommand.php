@@ -6,7 +6,7 @@ use Exception;
 use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\Artisan;
 
-class MigrationsRunCommand extends BaseCommand
+class DatabaseMigrateCommand extends BaseCommand
 {
     
     /**
@@ -14,14 +14,14 @@ class MigrationsRunCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'migrations:run';
+    protected $signature = 'db:migrate';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Create/Modify board database tables.';
+    protected $description = 'Run migrations for selected board.';
 
     /**
      * Execute the console command.

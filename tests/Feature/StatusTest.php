@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 
 
-it('can create new task statuses.', function () {
+it('can create new task status.', function () {
     fresh_project_dir(name: 'tests');
 
     $this->artisan("new:status Testing")->assertExitCode(0);
@@ -15,7 +15,7 @@ it('can create new task statuses.', function () {
 });
 
 
-it('cannot create duplicate task statuses.', function () {
+it('cannot create duplicate task status.', function () {
     fresh_project_dir(name: 'tests');
 
     $this->artisan("new:status Testing")->assertExitCode(0);

@@ -16,9 +16,10 @@ return new class extends Migration
         if(! Schema::hasTable('tasks')){
             Schema::create('tasks', function (Blueprint $table) {
                 $table->id();
-                $table->string('title');
+                $table->string('title')->nullable();
                 $table->text('description');
-                $table->timestamp('due_date');
+                $table->string("tags")->nullable();
+                $table->timestamp('due_date')->nullable();
                 $table->timestamps();
             });
         }

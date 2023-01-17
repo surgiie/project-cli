@@ -5,11 +5,12 @@ namespace App\Commands;
 use Illuminate\Support\Str;
 use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\DB;
+use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
 
 class NewTagCommand extends BaseCommand
 {
-    use WithValidation;
+    use WithValidation, WithTransformers;
     /**
      * The signature of the command.
      *
@@ -32,6 +33,14 @@ class NewTagCommand extends BaseCommand
                 $this->configureDatabaseConnection();
             }
         ]);
+    }
+    
+    /**Transform inputs.*/
+    public function transformers()
+    {
+        return [
+            'name' => 'trim',
+        ];
     }
 
     /**Command input validation rules.*/

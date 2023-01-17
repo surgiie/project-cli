@@ -20,7 +20,7 @@ class SelectBoardCommand extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Select the default board the cli should work with.';
+    protected $description = 'Select the default board for cli to use.';
 
 
     /**

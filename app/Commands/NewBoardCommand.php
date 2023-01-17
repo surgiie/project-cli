@@ -5,11 +5,12 @@ namespace App\Commands;
 use Illuminate\Support\Str;
 use App\Commands\BaseCommand;
 use Illuminate\Support\Facades\Artisan;
+use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
 
 class NewBoardCommand extends BaseCommand
 {
-    use WithValidation;
+    use WithValidation, WithTransformers;
     /**
      * The signature of the command.
      *
@@ -24,6 +25,13 @@ class NewBoardCommand extends BaseCommand
      */
     protected $description = 'Create a new board.';
 
+     /**Transform inputs.*/
+     public function transformers()
+     {
+         return [
+             'name' => 'trim',
+         ];
+     }
 
     public function rules()
     {
@@ -48,16 +56,14 @@ class NewBoardCommand extends BaseCommand
 
         $name = Str::kebab($this->data->get('name'));
 
-        $this->runTask("Create new project board $name", function (){
-
-            $name = $this->data->get('name');
+        $this->runTask("Create new project board $name", function () use($name){
 
             @mkdir(project_path("boards/$name"));
 
             touch(project_path("boards/$name/database"));
         });
 
-        $this->runTask("Create $name board database", function (){
+        $this->runTask("Create $name board database", function () use($name){
 
             $name = $this->data->get('name');
 
@@ -69,5 +75,9 @@ class NewBoardCommand extends BaseCommand
         $this->newLine();
 
         $this->components->info("The $name project board created successfully.");
+
+        if(get_selected_board_name() === false){
+            $this->callSilently('select', ['name'=>$name]);
+        }
     }
 }

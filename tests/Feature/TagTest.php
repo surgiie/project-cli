@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 
 
-it('can create new task tags.', function () {
+it('can create new task tag.', function () {
     fresh_project_dir(name: 'tests');
 
     $this->artisan("new:tag Urgent")->assertExitCode(0);
@@ -15,7 +15,7 @@ it('can create new task tags.', function () {
 });
 
 
-it('cannot create duplicate task tags.', function () {
+it('cannot create duplicate task tag.', function () {
     fresh_project_dir(name: 'tests');
 
     $this->artisan("new:tag Urgent")->assertExitCode(0);
