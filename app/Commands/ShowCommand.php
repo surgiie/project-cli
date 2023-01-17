@@ -52,7 +52,7 @@ class ShowCommand extends BaseCommand
 
         $this->consoleView('board', [
             'statuses' => $statuses,
-            'wrap'=>floor($width / count($statuses)) / 2
+            'wrap'=> floor($width / count($statuses)) / 2
         ]);
     }
 }
