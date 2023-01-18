@@ -2,20 +2,15 @@
 
 namespace App\Commands;
 
-use Illuminate\Support\Str;
+use App\Enums\Preference;
 use Illuminate\Support\Facades\DB;
-use Surgiie\Console\Concerns\WithValidation;
+use Illuminate\Support\Str;
 use Surgiie\Console\Concerns\WithTransformers;
+use Surgiie\Console\Concerns\WithValidation;
 
 class SetCommand extends BaseCommand
 {
     use WithValidation, WithTransformers;
-
-    /**The allowed preference names that can be set. */
-    protected $allowedNames = [
-        // the order of status columns on boards
-        'status-order',
-    ];
 
     /**
      * The signature of the command.
@@ -36,7 +31,7 @@ class SetCommand extends BaseCommand
     public function transformers()
     {
         return [
-            'name' => 'trim',
+            'name' => ['trim', fn ($v) => $this->normalizeToUpperSnakeCase($v)],
             'value' => 'trim',
         ];
     }
@@ -45,10 +40,10 @@ class SetCommand extends BaseCommand
     public function rules()
     {
         return ['name' => function ($_, $v, $fail) {
-            if (! in_array($v, $this->allowedNames)) {
+            if (! Preference::has($v)) {
                 $fail("The preference name '$v' is not valid or accepted by this cli.");
             }
-        }, 'value'=>['required']];
+        }, 'value' => ['required']];
     }
 
     /**Command requirements.*/
@@ -60,11 +55,7 @@ class SetCommand extends BaseCommand
             },
         ]);
     }
-    
-    protected function getPreferenceOrDefault(string $name, string $default)
-    {
 
-    }
     /**
      * Execute the console command.
      *
@@ -75,10 +66,10 @@ class SetCommand extends BaseCommand
         $name = $this->data->get('name');
         $value = $this->data->get('value');
 
-        $validateMethod = "validate".Str::studly($name);
+        $validateMethod = 'validate'.Str::studly(strtolower($name));
 
-        if(method_exists($this, $validateMethod)){
-            $this->$validateMethod();
+        if (method_exists(Preference::class, $validateMethod)) {
+            Preference::$validateMethod($value);
         }
 
         $task = $this->runTask("Set $name preference", function () {
@@ -90,26 +81,9 @@ class SetCommand extends BaseCommand
             ]);
         });
 
-        if($task->succeeded()){
+        if ($task->succeeded()) {
             $this->newLine();
             $this->components->info("Set the $name preference to: $value");
-        }
-    }
-
-    /**Validate that the status order value*/
-    protected function validateStatusOrder()
-    {
-        $statuses = explode(',', $this->data->get('value'));
-    
-        foreach($statuses as $status){
-            $record = DB::table('statuses')->where('name', Str::kebab($status))->first();
-            if(is_null($record)){
-                $this->exit("Status does not exist: $status");
-            }
-        }
-
-        if(count($statuses) != ($recordCount = DB::table('statuses')->count())){
-            $this->exit("Given list of status does not match table count of: $recordCount");
         }
     }
 }

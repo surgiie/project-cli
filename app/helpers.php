@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 if (! function_exists('get_selected_board_name')) {
     /**Get the name of the current set default board.*/
     function get_selected_board_name()
@@ -38,9 +40,12 @@ if (! function_exists('project_path')) {
     }
 }
 
-if (! function_exists('format_table_cell')) {
-    function format_table_cell($value, $wrap)
+if (! function_exists('to_local_datetime')) {
+    /**
+     * Return a local timezone carbon instance.
+     */
+    function to_local_datetime(mixed $value, string $tz = 'America/Indiana/Indianapolis'): Carbon
     {
-        return wordwrap(preg_replace('!\s+!', ' ', $value), $wrap);
+        return (new Carbon($value))->setTimezone($tz);
     }
 }

@@ -39,7 +39,7 @@ project new:status "Doing"
 project new:status "Done"
 ```
 
-Consider keeping this limitted to 3-5 statuses or however many statuses your screen/terminal size can render without impacting the board render from breaking to new lines.
+**Tip** For best render experience, consider keeping this to 3-5 statuses or however many statuses your screen/terminal size can render, 3-4 is best and too many would eventually cause rendering issues for the board.
 
 **Note**  You should create these order you wish to display them in board from left to right as the order of your board columns will be by `created_at` by default.
 
@@ -58,7 +58,16 @@ Lastly, you can create tasks:
 
 `project new:task "Some task description" --status="Todo" --tag="Urgent"`
 
-## Create Task Description With Vim
+## Edit Tasks
+You can overwrite existing data and update a task as follows: 
+
+`project edit:task <new-description> --id="<task-id>" --status="<new-status>" --tag="<new-tag>" --due-date="<new-due-date>`
+### Move Tasks
+To "move" an item, simply update the status field:
+
+`project edit:task --id="1" --status="Doing"`
+
+### Create Task Description With Vim
 If you prefer to type up the description of the task in vim instead of terminal, use the `--editor` flag to open a tmp file to type the description in a vim session:
 
 `project new:task --editor --status="Todo" --tag="Urgent"`
@@ -66,8 +75,7 @@ If you prefer to type up the description of the task in vim instead of terminal,
 Once you close vim, youll go back to the command process and your task will be created.
 
 
-**Note** If you prefer to use a different terminal based editor you can set the binary for another terminal based editor using the `PROJECT_CLI_EDITOR` environment variable, e.g `export PROJECT_CLI_EDITOR=nano`. Only terminal based editors are supported since editors like vscode, sublime, etc do not run in the same terminal process as the command call, youll be prompted to enter the description in the terminal if you attempt to set this
-env to a non-terminal based editor since those terminal binaries would not hold up the command call process.
+**Note** If you prefer to use a different terminal based editor you can set the binary for another terminal based editor using the `TERMINAL_EDITOR` preference as documented below. Only terminal based editors are supported since editors like vscode, sublime, etc do not run in the same terminal process as the command call, youll be prompted to enter the description in the terminal if you attempt to set this to a non-terminal based editor.
 
 ### Assign Due Dates:
 
@@ -80,13 +88,16 @@ env to a non-terminal based editor since those terminal binaries would not hold 
 
 You may customize certain functionality or output using preferences stored in your `sqlite` database, for example to specify the order of the columns of your board:
 
-`project set "status-order" "Todo, Doing, Done"
+`project set "STATUS_ORDER" "Todo, Doing, Done"
 
 The cli will consume these preferences as set by the values stored in this table. 
 
-Below is a list of options that can be set:
+Below is a list of options that can be currently set:
 
 
 | Name   | Description   |  Example  |  Default |
 |---|---|---|---|
-| `status-order`   | The order of the statuses shown on the board.  |  `project set status-order "Todo,Doing,Done"` | N/A |
+| `STATUS_ORDER`   | The order of the statuses shown on the board.  |  `project set STATUS_ORDER "Todo,Doing,Done"` | N/A |
+| `TERMINAL_EDITOR`   | The terminal editor to use for creating task content via `--editor` option.  |  `project set TERMINAL_EDITOR "nano"` | `vim` |
+| `DATE_TIMEZONE`   | The timezone to use for dates shown on the boards/task detail. Must be a valid list returned from php's [timezone_identifiers_list](https://www.php.net/manual/en/function.timezone-identifiers-list.php)  |  `project set DATE_TIMEZONE "America/New_York"` | `America/Indiana/Indianapolis` |
+

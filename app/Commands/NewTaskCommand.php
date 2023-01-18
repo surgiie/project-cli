@@ -10,7 +10,7 @@ use Surgiie\Console\Concerns\WithValidation;
 
 class NewTaskCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers;
+    use WithTransformers, WithValidation;
 
     /**
      * The signature of the command.
@@ -23,7 +23,7 @@ class NewTaskCommand extends BaseCommand
                                 {--due-date= : The due date for the task.}
                                 {--tag=* : Any tags to assign to the task.}
                                 {--status= : The status to assign to the task.}
-                                {--editor : Create the description of the task in a tmp file using vim. }';
+                                {--editor : Create the description of the task in a tmp file using the set terminal editor. }';
 
     /**
      * The description of the command.
@@ -44,17 +44,7 @@ class NewTaskCommand extends BaseCommand
         ];
     }
 
-    /**Command requirements.*/
-    public function requirements()
-    {
-        return array_merge(parent::requirements(), [
-            function () {
-                $this->configureDatabaseConnection();
-            },
-        ]);
-    }
-
-    /**Command input validation rules.*/
+    /**Input validation rules.*/
     public function rules()
     {
         return [
@@ -78,6 +68,16 @@ class NewTaskCommand extends BaseCommand
         ];
     }
 
+    /**Command requirements.*/
+    public function requirements()
+    {
+        return array_merge(parent::requirements(), [
+            function () {
+                $this->configureDatabaseConnection();
+            },
+        ]);
+    }
+
     /**
      * Execute the console command.
      */
@@ -96,7 +96,7 @@ class NewTaskCommand extends BaseCommand
                 'title' => $this->data->get('title'),
                 'description' => $description,
                 'status' => Str::kebab($this->data->get('status')),
-                'tags' => implode(',', $this->data->get('tags', [])),
+                'tags' => implode(',', $this->data->get('tag', [])),
                 'due_date' => $dueDate ? (new Carbon($dueDate))->toDateTimeString() : null,
                 'created_at' => now(),
                 'updated_at' => now(),

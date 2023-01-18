@@ -2,12 +2,17 @@
 
 namespace App\Commands;
 
+use App\Enums\Preference;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Surgiie\Console\Command as ConsoleCommand;
 use Symfony\Component\Process\Process;
 
 abstract class BaseCommand extends ConsoleCommand
 {
+    /**The cached user preferences.*/
+    protected ?array $preferences = null;
+
     /**Check requirements for the cli to work properly.*/
     public function requirements()
     {
@@ -29,7 +34,8 @@ abstract class BaseCommand extends ConsoleCommand
 
         fwrite($handle, $existingContent);
 
-        $editor = getenv('PROJECT_CLI_EDITOR') ?: 'vim';
+        $editor = $this->getPreferenceOrDefault(Preference::TERMINAL_EDITOR, 'vim');
+
         $process = new Process([$editor, $meta['uri']]);
 
         $process->setTty(true);
@@ -57,6 +63,18 @@ abstract class BaseCommand extends ConsoleCommand
             ]),
         ]);
     }
+
+      /**Get preference value or default.*/
+      public function getPreferenceOrDefault(Preference $preference, $default, bool|string $split = false)
+      {
+          $this->preferences ??= DB::table('preferences')->pluck('value', 'name')->all();
+
+          if (! array_key_exists($preference->name, $this->preferences)) {
+              return value($default);
+          }
+
+          return $split === false ? $this->preferences[$preference->name] : explode($split, $this->preferences[$preference->name]);
+      }
 
     /**Normalize name to snake & uppercase.*/
     protected function normalizeToUpperSnakeCase(string $name)

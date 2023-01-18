@@ -71,7 +71,7 @@ class NewBoardCommand extends BaseCommand
 
         $this->newLine();
 
-        $this->components->info("The project board was created successfully.");
+        $this->components->info('The project board was created successfully.');
 
         if (get_selected_board_name() === false) {
             $this->callSilently('select', ['name' => $name]);

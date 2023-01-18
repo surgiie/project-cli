@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             PestDatasetCommand::class,
             PestTestCommand::class,
         ];
+
         foreach ($devClasses as $class) {
             if (class_exists($class)) {
                 $hidden[] = $class;

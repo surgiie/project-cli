@@ -26,3 +26,17 @@ it('can select board.', function () {
 
     expect(file_get_contents(project_path('default-board')))->toBe('tests');
 });
+
+it('can show board', function () {
+    fresh_project_dir(name: 'tests');
+
+    $this->artisan('new:status Todo')->assertExitCode(0);
+    $this->artisan('new:tag Urgent')->assertExitCode(0);
+    $this->artisan('new:tag Devops')->assertExitCode(0);
+    $this->artisan('new:task Something --status=Todo --tag=Urgent --tag=Devops')->assertExitCode(0);
+
+    $command = $this->artisan('show:board')->assertExitCode(0);
+
+    // not entirely sure best way to assert table output, this feels good enough?
+    $command->expectsOutputToContain('Something');
+});
