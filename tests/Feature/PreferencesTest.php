@@ -27,3 +27,15 @@ it('cannot set invalid preferences.', function () {
 
     $command->expectsOutputToContain("The preference name 'SOMETHING_BAD' is not valid or accepted by this cli.");
 });
+
+it('can show preferences', function () {
+    fresh_project_dir(name: 'tests');
+    $this->artisan('new:status Todo')->assertExitCode(0);
+    $this->artisan('new:status Doing')->assertExitCode(0);
+    $this->artisan('new:status Done')->assertExitCode(0);
+    $this->artisan("set STATUS_ORDER 'Todo,Doing,Done'")->assertExitCode(0);
+
+    $command = $this->artisan('show:preferences')->assertExitCode(0);
+
+    $command->expectsOutputToContain('| STATUS_ORDER | Todo,Doing,Done |');
+});

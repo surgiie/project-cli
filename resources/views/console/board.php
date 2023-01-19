@@ -18,15 +18,17 @@
     @if(empty($task))
         @continue
     @endif
-ID: {{$task->id}}
-Tags: {{ $task->tags ? $task->tags : 'None' }}
-Due Date: {{ $task->due_date ? to_local_datetime($task->due_date)->format('m/d/Y h:i A'): 'None'}}
-{{ str_repeat('-', $wordWrap) }}
 
-Title: {{ $task->title ?: 'None' }} 
+ID: {{$task->id}}   
+
+Title: 
+
+{{ $task->title ?: 'None' }} 
 
 Description: 
+
 {{ $task->description }} 
+
 
     </td>
 
@@ -38,7 +40,7 @@ Description:
     </tbody>
     <tfoot>
         <tr>
-            <td align="center" colspan="3">
+            <td align="center" colspan="3" class="text-green">
                 Board: {{ $boardName }}
             </td>
         </tr>

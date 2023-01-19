@@ -10,16 +10,27 @@
 <tr border="1">
 
     <td class="mb-1">
-        
-Tags: {{ $task->tags ? $task->tags : 'None' }}
-Due Date: {{ $task->due_date ? to_local_datetime($task->due_date)->format('m/d/Y h:i A'): 'None'}}
-Created At: {{ $task->due_date ? to_local_datetime($task->created_at)->format('m/d/Y h:i A'): 'None'}}
-Updated At: {{ $task->due_date ? to_local_datetime($task->updated_at)->format('m/d/Y h:i A'): 'None'}}
+
+Title: 
+
+{{ $task->title ?: 'None' }} 
 {{ str_repeat('-', $wordWrap) }}
 
-Title: {{ $task->title ?: 'None' }} 
+Description: 
 
-Description: {{ $task->description }} 
+{{ $task->description }}   
+
+{{ str_repeat('-', $wordWrap) }}
+
+Tags: {{ $task->tags ? $task->tags : 'None' }}
+
+Due Date: {{ $task->due_date ? to_local_datetime($task->due_date, $timezone)->format('m/d/Y h:i A'): 'None'}}
+
+Created At: {{ $task->created_at ? to_local_datetime($task->created_at, $timezone)->format('m/d/Y h:i A'): 'None'}}
+
+Updated At: {{ $task->updated_at ? to_local_datetime($task->updated_at, $timezone)->format('m/d/Y h:i A'): 'None'}}
+
+
 
     </td>
 </tr>
@@ -27,7 +38,7 @@ Description: {{ $task->description }}
     </tbody>
     <tfoot>
         <tr>
-            <td align="center">
+            <td align="center" class="text-green">
                 Board: {{ $boardName }}
             </td>
         </tr>

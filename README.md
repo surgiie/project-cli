@@ -63,12 +63,12 @@ You can overwrite existing data and update a task as follows:
 
 `project edit:task <new-description> --id="<task-id>" --status="<new-status>" --tag="<new-tag>" --due-date="<new-due-date>`
 ### Move Tasks
-To "move" an item, simply update the status field:
+To "move" an task, simply update the status field:
 
 `project edit:task --id="1" --status="Doing"`
 
-### Create Task Description With Vim
-If you prefer to type up the description of the task in vim instead of terminal, use the `--editor` flag to open a tmp file to type the description in a vim session:
+### Create Task Description With Terminal Editor
+If you prefer to type up the description of the task in a terminal editor instead of terminal, use the `--editor` flag to open a tmp file to type the description, by default that will be vim:
 
 `project new:task --editor --status="Todo" --tag="Urgent"`
 

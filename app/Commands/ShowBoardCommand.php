@@ -47,7 +47,7 @@ class ShowBoardCommand extends BaseCommand
         $cachedTasks = [];
         $emptyStatuses = [];
 
-        $statuses = $this->getPreferenceOrDefault(Preference::STATUS_ORDER, DB::table('statuses')->pluck('display', 'name')->all(), split: ',');
+        $statuses = $this->getPreferenceOrDefault(Preference::STATUS_ORDER, DB::table('statuses')->pluck('display', 'name')->all());
 
         $totalStatuses = count($statuses);
         $wordWrap = floor((new Terminal)->getWidth() / $totalStatuses) / 2;
@@ -92,7 +92,6 @@ class ShowBoardCommand extends BaseCommand
             'rows' => $rows,
             'boardName' => get_selected_board_name(),
             'statuses' => $statuses,
-            'timezone' => $this->getPreferenceOrDefault(Preference::DATE_TIMEZONE, 'America/Indiana/Indianapolis'),
             'wordWrap' => $wordWrap,
         ]);
     }

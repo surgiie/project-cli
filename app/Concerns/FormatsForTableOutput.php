@@ -8,15 +8,15 @@ use Symfony\Component\Console\Terminal;
 
 trait FormatsForTableOutput
 {
-    protected $cachedTableFormatQueries = [];
+    protected ?array $cachedTableFormatQueries = null;
 
     /**Format the value so that it can render properly on terminal.*/
     protected function formatTaskForTable(stdClass $task)
     {
         foreach (array_keys(get_object_vars($task)) as $property) {
             $task->$property = wordwrap(preg_replace('!\s+!', ' ', $task->$property), $this->getTableWordWrap());
-        }
 
+        }
         return $task;
     }
 

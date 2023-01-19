@@ -37,6 +37,6 @@ it('can show board', function () {
 
     $command = $this->artisan('show:board')->assertExitCode(0);
 
-    // not entirely sure best way to assert table output, this feels good enough?
-    $command->expectsOutputToContain('Something');
+    // not entirely sure best way to assert view table output, this feels good enough?
+    $command->expectsOutputToContain('ID: 1');
 });
