@@ -26,7 +26,12 @@ class ShowPreferencesCommand extends BaseCommand
      */
     protected $description = 'Show current preferences settings.';
 
-    /**Command input validation rules.*/
+    
+    /**
+     * The command input validation to run.
+     * 
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -34,7 +39,11 @@ class ShowPreferencesCommand extends BaseCommand
         ];
     }
 
-    /**Command input transformers.*/
+    /**
+     * The command input transformers to run.
+     * 
+     * @return array
+     */
     public function transformers()
     {
         return [
@@ -42,7 +51,11 @@ class ShowPreferencesCommand extends BaseCommand
         ];
     }
 
-    /**Command requirements.*/
+    /**
+     * The command requirements to run.
+     * 
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -54,6 +67,8 @@ class ShowPreferencesCommand extends BaseCommand
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle()
     {
@@ -71,5 +86,7 @@ class ShowPreferencesCommand extends BaseCommand
         }
 
         $this->table($headers, $rows);
+
+        return 0;
     }
 }

@@ -27,7 +27,11 @@ class SetCommand extends BaseCommand
      */
     protected $description = 'Set a preference value in the preferences table';
 
-    /**The transformers to run on arguments.*/
+    /**
+     * The command transformers to apply to input/options.
+     * 
+     * @return array
+     */
     public function transformers()
     {
         return [
@@ -36,7 +40,11 @@ class SetCommand extends BaseCommand
         ];
     }
 
-    /**The validation rules for arguments.*/
+    /**
+     * The command input validation to run.
+     * 
+     * @return array
+     */
     public function rules()
     {
         return ['name' => function ($_, $v, $fail) {
@@ -46,7 +54,11 @@ class SetCommand extends BaseCommand
         }, 'value' => ['required']];
     }
 
-    /**Command requirements.*/
+   /**
+     * The command requirements to run.
+     * 
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -81,9 +93,12 @@ class SetCommand extends BaseCommand
             ]);
         });
 
-        if ($task->succeeded()) {
+        if ($success = $task->succeeded()) {
             $this->newLine();
             $this->components->info("Set the $name preference to: $value");
         }
+
+        
+        return $success ? 0: 1;
     }
 }

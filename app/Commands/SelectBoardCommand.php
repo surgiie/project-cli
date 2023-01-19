@@ -53,9 +53,11 @@ class SelectBoardCommand extends BaseCommand
             return file_put_contents($defaultFile, $name) !== false;
         });
 
-        if ($task->succeeded()) {
+        if ($success = $task->succeeded()) {
             $this->newLine();
             $this->components->info("Set the default board to: $name");
         }
+
+        return $success ? 0: 1;
     }
 }

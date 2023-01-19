@@ -33,7 +33,11 @@ class NewStatusCommand extends BaseCommand
         ];
     }
 
-    /**Command requirements.*/
+    /**
+     * The command requirements.
+     *
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -43,7 +47,11 @@ class NewStatusCommand extends BaseCommand
         ]);
     }
 
-    /**Command input validation rules.*/
+    /**
+     * The input validation rules.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -58,12 +66,14 @@ class NewStatusCommand extends BaseCommand
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle()
     {
         $name = $this->data->get('name');
 
-        $this->runTask("Create new task status called $name", function () {
+        $task = $this->runTask("Create new task status called $name", function () {
             $name = Str::kebab($givenValue = $this->data->get('name'));
 
             return DB::table('statuses')->insert([
@@ -74,8 +84,15 @@ class NewStatusCommand extends BaseCommand
             ]);
         });
 
-        $this->newLine();
+        $success = $task->succeeded();
+        if($success){
+            $this->newLine();
 
-        $this->components->info("The task status '$name' was created successfully.");
+            $this->components->info("The task status '$name' was created successfully.");
+        }
+        
+        return $success ? 0: 1;
+
+
     }
 }

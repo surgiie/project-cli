@@ -10,10 +10,18 @@ use Symfony\Component\Process\Process;
 
 abstract class BaseCommand extends ConsoleCommand
 {
-    /**The cached user preferences.*/
+    /**
+     * The cached user preferences.
+     *
+     * @var array|null
+     */
     protected ?array $preferences = null;
 
-    /**Check requirements for the cli to work properly.*/
+    /**
+     * Check requirements for the cli to work properly.
+     *
+     * @return void
+     */
     public function requirements()
     {
         return [
@@ -25,7 +33,12 @@ abstract class BaseCommand extends ConsoleCommand
         ];
     }
 
-    /**Open a tmp file using the given editor binary string. */
+    /**
+     * Open a tmp file using the given editor binary string.
+     *
+     * @param string $existingContent
+     * @return string
+     */
     protected function openTmpFile($existingContent = '')
     {
         $handle = tmpfile();
@@ -46,7 +59,12 @@ abstract class BaseCommand extends ConsoleCommand
         return file_get_contents($meta['uri']);
     }
 
-    /**Configure the database connection for the current selected board. */
+    /**
+     * Configure the database connection for the current selected board.
+     *
+     * @param string $name
+     * @return void
+     */
     protected function configureDatabaseConnection(string $name = '')
     {
         if (! $name) {
@@ -64,7 +82,14 @@ abstract class BaseCommand extends ConsoleCommand
         ]);
     }
 
-      /**Get preference value or default.*/
+      /**
+       * Get preference value or default.
+       *
+       * @param \App\Enums\Preference $preference
+       * @param mixed $default
+       * @param boolean $split
+       * @return void
+       */
       public function getPreferenceOrDefault(Preference $preference, $default, bool|string $split = false)
       {
           $this->preferences ??= DB::table('preferences')->pluck('value', 'name')->all();
@@ -76,7 +101,12 @@ abstract class BaseCommand extends ConsoleCommand
           return $split === false ? $this->preferences[$preference->name] : explode($split, $this->preferences[$preference->name]);
       }
 
-    /**Normalize name to snake & uppercase.*/
+    /**
+     * Normalize name to snake & uppercase.
+     *
+     * @param string $name
+     * @return string
+     */
     protected function normalizeToUpperSnakeCase(string $name)
     {
         $name = str_replace(['-', '_'], [' ', ' '], mb_strtolower($name));

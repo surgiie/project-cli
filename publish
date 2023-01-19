@@ -8,7 +8,7 @@ fi
 
 echo "<?php return \"$1\";" > "version.php";
 
-./application app:build --build-version="$1"
+./project app:build --build-version="$1"
 
 git add .
 git commit -m "Generate new version $1"

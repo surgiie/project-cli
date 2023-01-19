@@ -16,7 +16,12 @@ enum Preference
     /**The timezone to use for dates shown on the boards/task detail. */
     case DATE_TIMEZONE;
 
-    /**Determine if there is a preference with this name.*/
+    /**
+     * Determine if there is a preference with this name.
+     *
+     * @param string $name
+     * @return boolean
+     */
     public static function has(string $name): bool
     {
         $enumsArr = Preference::cases();
@@ -26,7 +31,12 @@ enum Preference
         return in_array($name, $names);
     }
 
-    /**Validate that the status order value*/
+    /**
+     * Validate that the status order value is valid for save.
+     *
+     * @param string $value
+     * @return void
+     */
     public static function validateStatusOrder(string $value)
     {
         $statuses = explode(',', $value);
@@ -43,8 +53,14 @@ enum Preference
             throw new ExitCommandException("Given list of status does not match table count of: $recordCount");
         }
     }
-
-    public static function validateDateTimezone(string $value){
+    /**
+     * Validate that the timezone value is valid for save.
+     *
+     * @param string $value
+     * @return void
+     */
+    public static function validateDateTimezone(string $value)
+    {
         $tzs = timezone_identifiers_list ();
         if(!in_array($value, $tzs)){
             throw new ExitCommandException("Invalid timezone '$value'");

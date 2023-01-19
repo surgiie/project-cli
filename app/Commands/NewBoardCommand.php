@@ -25,7 +25,11 @@ class NewBoardCommand extends BaseCommand
      */
     protected $description = 'Create a new board.';
 
-    /**Transform inputs.*/
+    /**
+     * The input transformer rules.
+     *
+     * @return array
+     */
     public function transformers()
     {
         return [
@@ -33,6 +37,11 @@ class NewBoardCommand extends BaseCommand
         ];
     }
 
+    /**
+     * The input validation rules.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -55,26 +64,33 @@ class NewBoardCommand extends BaseCommand
 
         $name = Str::kebab($this->data->get('name'));
 
+        if(is_dir(project_path("boards/$name"))){
+            $this->exit("The board '$name' already exists");
+        }
+
         $this->runTask("Create new project board called $name", function () use ($name) {
             @mkdir(project_path("boards/$name"));
 
             touch(project_path("boards/$name/database"));
         });
 
-        $this->runTask("Create $name board database", function () use ($name) {
-            $name = $this->data->get('name');
-
+        $task = $this->runTask("Create $name board database", function () use ($name) {
             $this->configureDatabaseConnection($name);
 
             Artisan::call('migrate');
+
         });
 
-        $this->newLine();
+        if ($success = $task->succeeded()) {
+            $this->newLine();
 
-        $this->components->info('The project board was created successfully.');
+            $this->components->info('The project board was created successfully.');
 
-        if (get_selected_board_name() === false) {
-            $this->callSilently('select', ['name' => $name]);
+            if (get_selected_board_name() === false) {
+                $this->callSilently('select', ['name' => $name]);
+            }
         }
+
+        return $success ? 0 : 1;
     }
 }

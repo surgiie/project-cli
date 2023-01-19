@@ -6,3 +6,4 @@
 composer.lock
 storage/.compiled
 fresh
+tests/.project

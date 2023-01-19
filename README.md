@@ -1,37 +1,30 @@
 # project-cli
+A simple PHP Kanban-style to-do CLI.
 
 ![Tests](https://github.com/surgiie/project-cli/actions/workflows/tests.yml/badge.svg)
+## Installation
 
-A simple php kanban style todo cli.
+* Ensure that `sqlite` and the `sqlite3` & `pctnl` extension are installed.
+
+* Run `composer global require surgiie/project-cli`. Run with `--ignore-platform-reqs` if using windows.
 
 
-## Install
-
-- `composer global require surgiie/project-cli`
--  `sqlite` and the `sqlite3` extension should be installed as the cli stores all data within a `sqlite` database.
-
-**Note** - The cli relies on the `pctnl` extension which is not available on linux, but windows is still supported, install with the `--ignore-platform-reqs` if using windows.
-## Create New Board
-
-To create a new board, run: `project new:board <board-name>`
+## Creating a New Board
+To create a new board, run: project new:board `<board-name>`
 
 This will create the following directory: `~/.project/boards/<board-name>`
 
 This will also create the following sqlite database file: `~/.projects/boards/<board-name>/database`.
 
+## Setting/Selecting a Board
+To set the default board that the CLI will interact with, run: `project select <board-name>`
 
-## Set/Select Board
+This allows the CLI to know which board to interact with when running commands.
 
-To set the default board the cli will interact with, run: `project select <board-name>`.
+Note: This will be done automatically on your first board creation.
 
-This allows the cli to know which board to interact with when running commands. 
-
-
-**Note** This will be done automatically on your first board creation.
-
-## Create Task Statuses
-
-Next, create statuses for your board tasks and to use as headers the board listing, for example a common set of statuses you may create:
+## Creating Task Statuses
+Create statuses for your board tasks and use them as headers in the board listing. For example, a common set of statuses you may create:
 
 ```bash
 project new:status "Todo"
@@ -39,61 +32,61 @@ project new:status "Doing"
 project new:status "Done"
 ```
 
-**Tip** For best render experience, consider keeping this to 3-5 statuses or however many statuses your screen/terminal size can render, 3-4 is best and too many would eventually cause rendering issues for the board.
+**Tip**: For the best render experience, consider keeping this to 3-5 statuses or however many statuses your screen/terminal size can render. 3-4 is best, and too many may cause rendering issues for the board.
 
-**Note**  You should create these order you wish to display them in board from left to right as the order of your board columns will be by `created_at` by default.
+**Note**: Create these in the order you wish to display them on the board from left to right as the order of your board columns will be by created_at by default.
 
-## Create Task Tags
-
-Next, optionally create tags for your board tasks, for example, you may like to tag tasks by urgency:
+## Creating Task Tags
+Optionally, you can create tags for your board tasks. For example, you may want to tag tasks by urgency:
 
 ```bash
 project new:tag "Urgent"
 project new:tag "Not Urgent"
 ```
 
-## Create Tasks
+## Creating Tasks
 
-Lastly, you can create tasks:
+You can create tasks by running the `new:task` command:
 
-`project new:task "Some task description" --status="Todo" --tag="Urgent"`
-
-## Edit Tasks
-You can overwrite existing data and update a task as follows: 
-
-`project edit:task <new-description> --id="<task-id>" --status="<new-status>" --tag="<new-tag>" --due-date="<new-due-date>`
-### Move Tasks
-To "move" an task, simply update the status field:
-
-`project edit:task --id="1" --status="Doing"`
-
-### Create Task Description With Terminal Editor
-If you prefer to type up the description of the task in a terminal editor instead of terminal, use the `--editor` flag to open a tmp file to type the description, by default that will be vim:
-
-`project new:task --editor --status="Todo" --tag="Urgent"`
-
-Once you close vim, youll go back to the command process and your task will be created.
-
-
-**Note** If you prefer to use a different terminal based editor you can set the binary for another terminal based editor using the `TERMINAL_EDITOR` preference as documented below. Only terminal based editors are supported since editors like vscode, sublime, etc do not run in the same terminal process as the command call, youll be prompted to enter the description in the terminal if you attempt to set this to a non-terminal based editor.
-
-### Assign Due Dates:
-
-`project new:task "Some task description" --due-date="tomorrow"`
+`project new:task "Some task description" --status="Todo" --tag="Urgent" --due-date="2 weeks"`
 
 **Note** Any string value that is parsable by the [Carbon](https://github.com/briannesbitt/Carbon) library can be used here.
 
+## Editing Tasks
 
-### CLI Preferences:
+You can edit existing tasks with `edit:task` command:
 
-You may customize certain functionality or output using preferences stored in your `sqlite` database, for example to specify the order of the columns of your board:
+`project edit:task <new-description> --id="<task-id>" --status="<new-status>" --tag="<new-tag>" --due-date="<new-due-date>"`
 
-`project set "STATUS_ORDER" "Todo, Doing, Done"
+## Moving Tasks
+To "move" a task, simply update the status field:
 
-The cli will consume these preferences as set by the values stored in this table. 
+`project edit:task --id="1" --status="Doing"`
 
-Below is a list of options that can be currently set:
+## Creating Task Description with Terminal Editor
+If you prefer to type up the description of the task in a terminal editor instead of the command line, use the --editor flag to open a temporary file to type the description. By default, this will be in Vim:
 
+`project new:task --editor --status="Todo" --tag="Urgent"`
+
+Once you close vim, you will return to the command process and your task will be created.
+
+**Note**: If you prefer to use a different terminal-based editor, you can set the binary for another terminal-based editor using the TERMINAL_EDITOR preference as documented below. Only terminal-based editors are supported, since editors like VSCode, Sublime, etc. do not run in the same terminal process as the command call. If you attempt to set this to a non-terminal based editor, you will be prompted to enter the description in the terminal.
+
+
+## Show board
+You may show you board with the `show:board` command, you'll see something like this example:
+
+![project-cli kanban board](https://github.com/surgiie/project-cli/blob/master/board-example.png?raw=true)
+
+## CLI Preferences:
+
+You can customize certain functionality or output using preferences stored in your sqlite database. For example, to specify the order of the columns of your board:
+
+`project set "STATUS_ORDER" "Todo, Doing, Done"`
+
+The CLI will consume these preferences as set by the values stored in this table.
+
+Below is a list of options that can currently be set:
 
 | Name   | Description   |  Example  |  Default |
 |---|---|---|---|

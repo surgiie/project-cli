@@ -32,7 +32,11 @@ class NewTaskCommand extends BaseCommand
      */
     protected $description = 'Create a new board task.';
 
-    /**Transform inputs.*/
+    /**
+     * The transfomers to run against inputs.
+     *
+     * @return array
+     */
     public function transformers()
     {
         return [
@@ -44,7 +48,11 @@ class NewTaskCommand extends BaseCommand
         ];
     }
 
-    /**Input validation rules.*/
+    /**
+     * The input validation rules.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -68,7 +76,11 @@ class NewTaskCommand extends BaseCommand
         ];
     }
 
-    /**Command requirements.*/
+    /**
+     * The command requirements to run.
+     * 
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -80,6 +92,8 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle()
     {
@@ -89,10 +103,10 @@ class NewTaskCommand extends BaseCommand
 
         $description = $this->getOrAskForInput('description');
 
-        $this->runTask('Create new task', function () use ($description) {
+        $task = $this->runTask('Create new task', function ($task) use ($description) {
             $dueDate = $this->data->get('due-date');
 
-            return DB::table('tasks')->insert([
+            $id = DB::table('tasks')->insertGetId([
                 'title' => $this->data->get('title'),
                 'description' => $description,
                 'status' => Str::kebab($this->data->get('status')),
@@ -101,10 +115,18 @@ class NewTaskCommand extends BaseCommand
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            $task->remember(['id'=>$id]);
+
+            return is_numeric($id);
         });
 
-        $this->newLine();
-
-        $this->components->info('Task was created successfully.');
+        if($success = $task->succeeded()){
+            $this->newLine();
+            $id =  $task->data()['id'];
+            $this->components->info("Task was created successfully. ID: $id");
+        }
+        
+        return $success ? 0: 1;
     }
 }

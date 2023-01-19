@@ -25,7 +25,11 @@ class NewTagCommand extends BaseCommand
      */
     protected $description = 'Create a new task tag.';
 
-    /**Command requirements.*/
+    /**
+     * The command requirements to run.
+     * 
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -34,16 +38,22 @@ class NewTagCommand extends BaseCommand
             },
         ]);
     }
-
-    /**Transform inputs.*/
+    /**
+     * The input transformer rules.
+     * 
+     * @return int
+     */
     public function transformers()
     {
         return [
             'name' => 'trim',
         ];
     }
-
-    /**Command input validation rules.*/
+    /**
+     * The input validation rules.
+     * 
+     * @return int
+     */
     public function rules()
     {
         return [
@@ -58,12 +68,14 @@ class NewTagCommand extends BaseCommand
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle()
     {
         $name = $this->data->get('name');
 
-        $this->runTask("Create new task tag called $name", function () {
+        $task = $this->runTask("Create new task tag called $name", function () {
             $name = Str::kebab($givenValue = $this->data->get('name'));
 
             return DB::table('tags')->insert([
@@ -74,8 +86,13 @@ class NewTagCommand extends BaseCommand
             ]);
         });
 
-        $this->newLine();
-
-        $this->components->info("The task tag '$name' was created successfully.");
+        $success = $task->succeeded();
+        if($success){
+            $this->newLine();
+            
+            $this->components->info("The task tag '$name' was created successfully.");
+        }
+        
+        return $success ? 0: 1;
     }
 }

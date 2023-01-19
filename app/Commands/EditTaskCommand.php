@@ -45,7 +45,11 @@ class EditTaskCommand extends BaseCommand
         ];
     }
 
-    /**Command requirements.*/
+     /**
+     * The command requirements to check.
+     *
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -55,7 +59,11 @@ class EditTaskCommand extends BaseCommand
         ]);
     }
 
-    /**Input validation rules.*/
+    /**
+     * The input validation rules.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -81,6 +89,8 @@ class EditTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle()
     {
@@ -88,7 +98,7 @@ class EditTaskCommand extends BaseCommand
             $this->exit("No update data given, nothing to do.", level: "warn");
         }
 
-        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', rules: ['integer']))->first();
+        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules'=> ['integer']]))->first();
 
         if (is_null($task)) {
             $this->exit("Task with id '$id' does not exist");
@@ -100,7 +110,7 @@ class EditTaskCommand extends BaseCommand
             $this->data->put('description', $this->getOrAskForInput('description'));
         }
 
-        $this->runTask('Edit task', function () use ($id, $task) {
+        $task = $this->runTask('Edit task', function () use ($id, $task) {
             $title = $this->data->get('title');
             $status = $this->data->get('status');
             $description = $this->data->get('description');
@@ -119,8 +129,12 @@ class EditTaskCommand extends BaseCommand
             return $result != 0;
         });
 
-        $this->newLine();
+        if($success = $task->succeeded()){
+            $this->newLine();
 
-        $this->components->info('Task was updated successfully.');
+            $this->components->info('Task was updated successfully.');
+        }
+
+        return $success ? 0: 1;
     }
 }

@@ -18,7 +18,7 @@ use Surgiie\Console\Command;
 uses(Tests\TestCase::class)->in('Feature');
 
 uses()->beforeAll(function () {
-    Command::disableAsyncTask();
+    Command::disableConcurrentTasks();
 })->in(__DIR__);
 
 function fresh_project_dir(?string $name = 'tests')

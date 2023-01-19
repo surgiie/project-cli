@@ -26,7 +26,11 @@ class ShowTaskCommand extends BaseCommand
      */
     protected $description = 'Show detail for a single task by id.';
 
-    /**Command input validation rules.*/
+    /**
+     * The input validation rules.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -34,7 +38,11 @@ class ShowTaskCommand extends BaseCommand
         ];
     }
 
-    /**Command input transformers.*/
+    /**
+     * The command input transformers to run.
+     * 
+     * @return array
+     */
     public function transformers()
     {
         return [
@@ -42,7 +50,11 @@ class ShowTaskCommand extends BaseCommand
         ];
     }
 
-    /**Command requirements.*/
+    /**
+     * The command input validation to run.
+     * 
+     * @return array
+     */
     public function requirements()
     {
         return array_merge(parent::requirements(), [
@@ -54,10 +66,12 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle()
     {
-        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', rules: ['integer']))->first();
+        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules'=> ['integer']]))->first();
 
         if (is_null($task)) {
             $this->exit("Task with id '$id' does not exist");

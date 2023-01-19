@@ -10,8 +10,13 @@ trait FormatsForTableOutput
 {
     protected ?array $cachedTableFormatQueries = null;
 
-    /**Format the value so that it can render properly on terminal.*/
-    protected function formatTaskForTable(stdClass $task)
+    /**
+     * Format the value so that it can render properly on terminal.
+     *
+     * @param stdClass $task
+     * @return stdClass
+     */
+    protected function formatTaskForTable(stdClass $task): stdClass
     {
         foreach (array_keys(get_object_vars($task)) as $property) {
             $task->$property = wordwrap(preg_replace('!\s+!', ' ', $task->$property), $this->getTableWordWrap());
@@ -20,8 +25,12 @@ trait FormatsForTableOutput
         return $task;
     }
 
-    /**Get table wordwrap for text values.*/
-    protected function getTableWordWrap()
+    /**
+     * Get table wordwrap for text values.
+     *
+     * @return int
+     */
+    protected function getTableWordWrap(): int
     {
         $this->cachedTableFormatQueries['statues'] ??= DB::table('statuses')->count();
 

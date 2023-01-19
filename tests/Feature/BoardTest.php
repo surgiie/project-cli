@@ -5,7 +5,9 @@ it('can create new board.', function () {
 
     $testBoardPath = project_path('boards/tests');
 
-    $this->artisan('new:board tests')->assertExitCode(0);
+    $this->artisan('new:board', [
+        'name'=>'tests'
+    ])->assertExitCode(0);
 
     expect(is_dir($testBoardPath))->toBeTrue();
     expect(is_file($testBoardPath.'/database'))->toBeTrue();
@@ -14,7 +16,7 @@ it('can create new board.', function () {
 it('throws error when selecting board that doesnt exist', function () {
     fresh_project_dir(name: null);
 
-    $command = $this->artisan('select tests')->assertExitCode(1);
+    $command = $this->artisan('select', ['name'=>'tests'])->assertExitCode(1);
 
     $command->expectsOutputToContain("The board 'tests' does not exist");
 });
@@ -22,7 +24,7 @@ it('throws error when selecting board that doesnt exist', function () {
 it('can select board.', function () {
     fresh_project_dir(name: 'tests');
 
-    $this->artisan('select tests')->assertExitCode(0);
+    $this->artisan('select', ['name'=>'tests'])->assertExitCode(0);
 
     expect(file_get_contents(project_path('default-board')))->toBe('tests');
 });
@@ -30,10 +32,15 @@ it('can select board.', function () {
 it('can show board', function () {
     fresh_project_dir(name: 'tests');
 
-    $this->artisan('new:status Todo')->assertExitCode(0);
-    $this->artisan('new:tag Urgent')->assertExitCode(0);
-    $this->artisan('new:tag Devops')->assertExitCode(0);
-    $this->artisan('new:task Something --status=Todo --tag=Urgent --tag=Devops')->assertExitCode(0);
+    $this->artisan('new:status', ['name'=>'Todo'])->assertExitCode(0);
+    $this->artisan('new:tag', ['name'=>'Urgent'])->assertExitCode(0);
+    $this->artisan('new:tag', ['name'=>'Devops'])->assertExitCode(0);
+    
+    $this->artisan('new:task', [
+        'description'=>'Something',
+        '--status'=>'Todo',
+        '--tag'=>['Urgent', 'Devops'],
+    ])->assertExitCode(0);
 
     $command = $this->artisan('show:board')->assertExitCode(0);
 

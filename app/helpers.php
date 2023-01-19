@@ -3,7 +3,11 @@
 use Carbon\Carbon;
 
 if (! function_exists('get_selected_board_name')) {
-    /**Get the name of the current set default board.*/
+    /**
+     * Get the name of the current set default board.
+     *
+     * @return string
+     */
     function get_selected_board_name()
     {
         $defaultFile = project_path('default-board');
@@ -23,7 +27,12 @@ if (! function_exists('get_selected_board_name')) {
 }
 
 if (! function_exists('project_path')) {
-    /**Create a path relavent to the .project directory.*/
+    /**
+     * Create a path relavent to the .project directory.
+     *
+     * @param string $path
+     * @return string
+     */
     function project_path(string $path = '')
     {
         $basePath = getenv('PROJECT_CLI_BASE_PATH');
@@ -42,7 +51,11 @@ if (! function_exists('project_path')) {
 
 if (! function_exists('to_local_datetime')) {
     /**
-     * Return a local timezone carbon instance.
+     * Return a local timezone carbon instance
+     *
+     * @param mixed $value
+     * @param string $tz
+     * @return \Carbon\Carbon
      */
     function to_local_datetime(mixed $value, string $tz = 'America/Indiana/Indianapolis'): Carbon
     {

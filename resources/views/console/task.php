@@ -22,15 +22,31 @@ Description:
 
 {{ str_repeat('-', $wordWrap) }}
 
-Tags: {{ $task->tags ? $task->tags : 'None' }}
+Tags: 
 
-Due Date: {{ $task->due_date ? to_local_datetime($task->due_date, $timezone)->format('m/d/Y h:i A'): 'None'}}
+{{ $task->tags ? $task->tags : 'None' }}
+{{ str_repeat('-', $wordWrap) }}
 
-Created At: {{ $task->created_at ? to_local_datetime($task->created_at, $timezone)->format('m/d/Y h:i A'): 'None'}}
+@if($task->due_date)
+Due Date: 
 
-Updated At: {{ $task->updated_at ? to_local_datetime($task->updated_at, $timezone)->format('m/d/Y h:i A'): 'None'}}
+{{ to_local_datetime($task->due_date, $timezone)->format('m/d/Y h:i A') }}
 
+Past Due: {{ to_local_datetime($task->due_date, $timezone)->isPast() ? "Yes": "No"}}
 
+@else
+None
+@endif
+{{ str_repeat('-', $wordWrap) }}
+
+Created At: 
+
+{{ $task->created_at ? to_local_datetime($task->created_at, $timezone)->format('m/d/Y h:i A'): 'None'}}
+{{ str_repeat('-', $wordWrap) }}
+
+Updated At: 
+
+{{ $task->updated_at ? to_local_datetime($task->updated_at, $timezone)->format('m/d/Y h:i A'): 'None'}}
 
     </td>
 </tr>
