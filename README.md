@@ -34,8 +34,6 @@ project new:status "Done"
 
 **Tip**: For the best render experience, consider keeping this to 3-5 statuses or however many statuses your screen/terminal size can render. 3-4 is best, and too many may cause rendering issues for the board.
 
-**Note**: Create these in the order you wish to display them on the board from left to right as the order of your board columns will be by created_at by default.
-
 ## Creating Task Tags
 Optionally, you can create tags for your board tasks. For example, you may want to tag tasks by urgency:
 
