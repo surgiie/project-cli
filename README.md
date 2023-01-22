@@ -78,6 +78,12 @@ You may show you board with the `show:board` command, you'll see something like 
 
 ![project-cli kanban board](https://github.com/surgiie/project-cli/blob/master/board-example.png?raw=true)
 
+
+## Show Task Detail
+
+To print out a single task with detail, run the `show:task` command with the id of the task you wish to view:
+
+`project show:task 20`
 ## CLI Preferences:
 
 You can customize certain functionality or output using preferences stored in your sqlite database. For example, to specify the order of the columns of your board:
