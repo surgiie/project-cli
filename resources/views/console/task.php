@@ -27,8 +27,8 @@ Tags:
 {{ $task->tags ? $task->tags : 'None' }}
 {{ str_repeat('-', $wordWrap) }}
 
-@if($task->due_date)
 Due Date: 
+@if($task->due_date)
 
 {{ to_local_datetime($task->due_date, $timezone)->format('m/d/Y h:i A') }}
 
