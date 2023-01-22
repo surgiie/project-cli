@@ -11,6 +11,13 @@
 
     <td class="mb-1">
 
+
+
+Status: 
+
+{{ $task->status }} 
+{{ str_repeat('-', $wordWrap) }}
+
 Title: 
 
 {{ $task->title ?: 'None' }} 
