@@ -125,3 +125,20 @@ it('cannot edit task with bad tag.', function () {
     expect($task->description)->not->toBe("SomethingElse");
 });
 
+it('can delete task.', function () {
+    fresh_project_dir(name: 'tests');
+
+    $this->artisan('new:status Todo')->assertExitCode(0);
+    $this->artisan('new:tag Urgent')->assertExitCode(0);
+    $this->artisan('new:tag Devops')->assertExitCode(0);
+    $this->artisan('new:task Something --status=Todo --tag=Urgent --tag=Devops')->assertExitCode(0);
+    
+    $task = DB::connection('board')->table('tasks')->where('description', 'Something')->first();
+    
+    expect($task->description)->toBe('Something');
+    expect($task->tags)->toBe('Urgent,Devops');
+
+    $this->artisan('remove:task', ['--id'=>['1']])->assertExitCode(0);
+    $task = DB::connection('board')->table('tasks')->where('description', 'Something')->first();
+    expect($task)->toBeNull();
+});
