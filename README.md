@@ -81,7 +81,14 @@ You may show you board with the `show:board` command, you'll see something like 
 
 To print out a single task with detail, run the `show:task` command with the id of the task you wish to view:
 
-`project show:task 20`
+
+## Remove Tasks
+
+To remove tasks from the board run the `remove:task` command with `--id` option.
+
+`project remove:task --id=20`
+
+**Note** - The `--id` option can be passed multiple times to remove many tasks at once.
 ## CLI Preferences:
 
 You can customize certain functionality or output using preferences stored in your sqlite database. For example, to specify the order of the columns of your board:

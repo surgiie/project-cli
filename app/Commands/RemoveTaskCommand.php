@@ -31,10 +31,6 @@ class RemoveTaskCommand extends BaseCommand
     {
         return [
             'id.*' => 'trim',
-            'title' => 'trim',
-            'due-date' => 'trim',
-            'status' => 'trim',
-            'description' => 'trim',
         ];
     }
 
