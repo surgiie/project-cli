@@ -3,6 +3,7 @@
     "directories": [
         "app",
         "bootstrap",
+        "database",
         "resources",
         "config",
         "vendor"

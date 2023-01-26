@@ -32,15 +32,15 @@ class DatabaseMigrateCommand extends BaseCommand
             $this->configureDatabaseConnection();
 
             try {
-                Artisan::call('migrate');
+                $this->call('migrate', ['--force'=>true]);
             } catch (Exception $e) {
-                $task->data(['error' => $e->getMessage()]);
+                $task->remember(['error' => $e->getMessage()]);
 
                 return false;
             }
         });
 
-        $data = $task->getData();
+        $data = $task->data();
 
         $this->newLine();
 
