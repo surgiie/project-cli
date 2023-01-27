@@ -76,7 +76,7 @@ class NewBoardCommand extends BaseCommand
 
         $task = $this->runTask("Create $name board database", function () use ($name) {
             $this->configureDatabaseConnection($name);
-            $this->call('migrate', ['--force'=>true]);
+            $this->callSilently('migrate', ['--force'=>true]);
         });
 
         if ($success = $task->succeeded()) {
