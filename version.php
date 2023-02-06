@@ -1,1 +1,1 @@
-<?php return "v0.2.3";
+<?php return "v0.2.4";
