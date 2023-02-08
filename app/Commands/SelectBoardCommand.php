@@ -29,7 +29,7 @@ class SelectBoardCommand extends BaseCommand
     {
         $name = $this->data->get('name');
 
-        if (! is_dir(project_path("boards/$name"))) {
+        if ($name && ! is_dir(project_path("boards/$name"))) {
             $this->exit("The board '$name' does not exist");
         }
 
@@ -42,6 +42,10 @@ class SelectBoardCommand extends BaseCommand
                 $name = $file->getBaseName();
 
                 $boards[$name] = $name;
+            }
+            
+            if(empty($boards)){
+                $this->exit("No boards to select from");
             }
 
             $name = $this->menu('Select a board:', $boards)->open();

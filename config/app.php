@@ -47,7 +47,7 @@ return [
     | renderered files. This is also required if the cli relies on blade helper
     | from surgiie/console and is being built as a stand alone phar.
     */
-    'compiled_path' => storage_path('.compiled'),
+    'compiled_path' => storage_path('app/.compiled'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
