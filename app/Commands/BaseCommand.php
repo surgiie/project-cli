@@ -23,10 +23,6 @@ abstract class BaseCommand extends ConsoleCommand
     {
         $blade = parent::blade();
 
-        if ($compilePath = $this->data->get('compile-path')) {
-            $blade->setCompiledPath($compilePath);
-        }
-
         if ($this->app->runningUnitTests()) {
             $blade->setCompiledPath(base_path('tests/.compiled'));
         }
