@@ -43,9 +43,9 @@ class SelectBoardCommand extends BaseCommand
 
                 $boards[$name] = $name;
             }
-            
-            if(empty($boards)){
-                $this->exit("No boards to select from");
+
+            if (empty($boards)) {
+                $this->exit('No boards to select from');
             }
 
             $name = $this->menu('Select a board:', $boards)->open();
@@ -62,6 +62,6 @@ class SelectBoardCommand extends BaseCommand
             $this->components->info("Set the default board to: $name");
         }
 
-        return $success ? 0: 1;
+        return $success ? 0 : 1;
     }
 }

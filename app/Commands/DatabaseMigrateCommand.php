@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use Exception;
-use Illuminate\Support\Facades\Artisan;
 
 class DatabaseMigrateCommand extends BaseCommand
 {
@@ -32,7 +31,7 @@ class DatabaseMigrateCommand extends BaseCommand
             $this->configureDatabaseConnection();
 
             try {
-                $this->call('migrate', ['--force'=>true]);
+                $this->call('migrate', ['--force' => true]);
             } catch (Exception $e) {
                 $task->remember(['error' => $e->getMessage()]);
 

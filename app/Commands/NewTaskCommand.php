@@ -78,7 +78,7 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     * 
+     *
      * @return array
      */
     public function requirements()
@@ -92,7 +92,7 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
@@ -116,17 +116,17 @@ class NewTaskCommand extends BaseCommand
                 'updated_at' => now(),
             ]);
 
-            $task->remember(['id'=>$id]);
+            $task->remember(['id' => $id]);
 
             return is_numeric($id);
         });
 
-        if($success = $task->succeeded()){
+        if ($success = $task->succeeded()) {
             $this->newLine();
-            $id =  $task->data()['id'];
+            $id = $task->data()['id'];
             $this->components->info("Task was created successfully. ID: $id");
         }
-        
-        return $success ? 0: 1;
+
+        return $success ? 0 : 1;
     }
 }

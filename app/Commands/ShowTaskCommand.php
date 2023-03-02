@@ -2,11 +2,11 @@
 
 namespace App\Commands;
 
+use App\Concerns\FormatsForTableOutput;
 use App\Enums\Preference;
 use Illuminate\Support\Facades\DB;
-use App\Concerns\FormatsForTableOutput;
-use Surgiie\Console\Concerns\WithValidation;
 use Surgiie\Console\Concerns\WithTransformers;
+use Surgiie\Console\Concerns\WithValidation;
 
 class ShowTaskCommand extends BaseCommand
 {
@@ -40,7 +40,7 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * The command input transformers to run.
-     * 
+     *
      * @return array
      */
     public function transformers()
@@ -52,7 +52,7 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * The command input validation to run.
-     * 
+     *
      * @return array
      */
     public function requirements()
@@ -66,12 +66,12 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
     {
-        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules'=> ['integer']]))->first();
+        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules' => ['integer']]))->first();
 
         if (is_null($task)) {
             $this->exit("Task with id '$id' does not exist");

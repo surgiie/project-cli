@@ -40,16 +40,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Compiled cache path.
-    |--------------------------------------------------------------------------
-    |
-    | This value determines where to put compiled results for blade
-    | renderered files. This is also required if the cli relies on blade helper
-    | from surgiie/console and is being built as a stand alone phar.
-    */
-    'compiled_path' => storage_path('app/.compiled'),
-    /*
-    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -59,9 +49,7 @@ return [
     | the global command line "--env" option when calling commands.
     |
     */
-
-    'env' => 'development',
-
+    'env' => env('APP_ENV', 'development'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

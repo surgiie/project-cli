@@ -12,23 +12,18 @@ trait FormatsForTableOutput
 
     /**
      * Format the value so that it can render properly on terminal.
-     *
-     * @param stdClass $task
-     * @return stdClass
      */
     protected function formatTaskForTable(stdClass $task): stdClass
     {
         foreach (array_keys(get_object_vars($task)) as $property) {
             $task->$property = wordwrap(preg_replace('!\s+!', ' ', $task->$property), $this->getTableWordWrap());
-
         }
+
         return $task;
     }
 
     /**
      * Get table wordwrap for text values.
-     *
-     * @return int
      */
     protected function getTableWordWrap(): int
     {

@@ -29,7 +29,7 @@ class SetCommand extends BaseCommand
 
     /**
      * The command transformers to apply to input/options.
-     * 
+     *
      * @return array
      */
     public function transformers()
@@ -42,7 +42,7 @@ class SetCommand extends BaseCommand
 
     /**
      * The command input validation to run.
-     * 
+     *
      * @return array
      */
     public function rules()
@@ -54,9 +54,9 @@ class SetCommand extends BaseCommand
         }, 'value' => ['required']];
     }
 
-   /**
+    /**
      * The command requirements to run.
-     * 
+     *
      * @return array
      */
     public function requirements()
@@ -98,7 +98,6 @@ class SetCommand extends BaseCommand
             $this->components->info("Set the $name preference to: $value");
         }
 
-        
-        return $success ? 0: 1;
+        return $success ? 0 : 1;
     }
 }

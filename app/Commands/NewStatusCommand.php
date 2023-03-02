@@ -66,7 +66,7 @@ class NewStatusCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
@@ -85,14 +85,12 @@ class NewStatusCommand extends BaseCommand
         });
 
         $success = $task->succeeded();
-        if($success){
+        if ($success) {
             $this->newLine();
 
             $this->components->info("The task status '$name' was created successfully.");
         }
-        
-        return $success ? 0: 1;
 
-
+        return $success ? 0 : 1;
     }
 }

@@ -4,6 +4,6 @@
 /.vagrant
 .phpunit.result.cache
 composer.lock
-storage/.compiled
+.compiled
 fresh
 tests/.project

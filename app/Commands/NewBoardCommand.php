@@ -2,7 +2,6 @@
 
 namespace App\Commands;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Surgiie\Console\Concerns\WithTransformers;
 use Surgiie\Console\Concerns\WithValidation;
@@ -64,7 +63,7 @@ class NewBoardCommand extends BaseCommand
 
         $name = Str::kebab($this->data->get('name'));
 
-        if(is_dir(project_path("boards/$name"))){
+        if (is_dir(project_path("boards/$name"))) {
             $this->exit("The board '$name' already exists");
         }
 
@@ -76,7 +75,7 @@ class NewBoardCommand extends BaseCommand
 
         $task = $this->runTask("Create $name board database", function () use ($name) {
             $this->configureDatabaseConnection($name);
-            $this->callSilently('migrate', ['--force'=>true]);
+            $this->callSilently('migrate', ['--force' => true]);
         });
 
         if ($success = $task->succeeded()) {

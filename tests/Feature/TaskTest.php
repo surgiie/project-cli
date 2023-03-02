@@ -75,20 +75,19 @@ it('can edit task.', function () {
     $this->artisan('new:tag NotUrgent')->assertExitCode(0);
     $this->artisan('new:tag NotDevops')->assertExitCode(0);
     $this->artisan('new:task Something --title="test" --status=Todo --tag=Urgent --tag=Devops')->assertExitCode(0);
-    
+
     $task = DB::connection('board')->table('tasks')->where('title', 'test')->first();
 
     expect($task->description)->toBe('Something');
     expect($task->tags)->toBe('Urgent,Devops');
-    
+
     $this->artisan('edit:task SomethingElse --id="1" --title="test" --status=Todo --tag=NotUrgent --tag=NotDevops')->assertExitCode(0);
-    
+
     $task = DB::connection('board')->table('tasks')->where('title', 'test')->first();
-    
+
     expect($task->description)->toBe('SomethingElse');
     expect($task->tags)->toBe('NotUrgent,NotDevops');
 });
-
 
 it('cannot edit task with bad status.', function () {
     fresh_project_dir(name: 'tests');
@@ -104,7 +103,7 @@ it('cannot edit task with bad status.', function () {
 
     $task = DB::connection('board')->table('tasks')->where('title', 'test')->first();
 
-    expect($task->description)->not->toBe("SomethingElse");
+    expect($task->description)->not->toBe('SomethingElse');
 });
 
 it('cannot edit task with bad tag.', function () {
@@ -119,10 +118,10 @@ it('cannot edit task with bad tag.', function () {
     $command = $this->artisan('edit:task SomethingElse --id=1 --status=Todo --tag=example')->assertExitCode(1);
 
     $command->expectsOutputToContain('Tag does not exist: example.');
-  
+
     $task = DB::connection('board')->table('tasks')->where('title', 'test')->first();
 
-    expect($task->description)->not->toBe("SomethingElse");
+    expect($task->description)->not->toBe('SomethingElse');
 });
 
 it('can delete task.', function () {
@@ -132,13 +131,13 @@ it('can delete task.', function () {
     $this->artisan('new:tag Urgent')->assertExitCode(0);
     $this->artisan('new:tag Devops')->assertExitCode(0);
     $this->artisan('new:task Something --status=Todo --tag=Urgent --tag=Devops')->assertExitCode(0);
-    
+
     $task = DB::connection('board')->table('tasks')->where('description', 'Something')->first();
-    
+
     expect($task->description)->toBe('Something');
     expect($task->tags)->toBe('Urgent,Devops');
 
-    $this->artisan('remove:task', ['--id'=>['1']])->assertExitCode(0);
+    $this->artisan('remove:task', ['--id' => ['1']])->assertExitCode(0);
     $task = DB::connection('board')->table('tasks')->where('description', 'Something')->first();
     expect($task)->toBeNull();
 });

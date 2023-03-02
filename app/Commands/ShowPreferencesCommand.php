@@ -2,11 +2,10 @@
 
 namespace App\Commands;
 
-use App\Enums\Preference;
-use Illuminate\Support\Facades\DB;
 use App\Concerns\FormatsForTableOutput;
-use Surgiie\Console\Concerns\WithValidation;
+use Illuminate\Support\Facades\DB;
 use Surgiie\Console\Concerns\WithTransformers;
+use Surgiie\Console\Concerns\WithValidation;
 
 class ShowPreferencesCommand extends BaseCommand
 {
@@ -26,10 +25,9 @@ class ShowPreferencesCommand extends BaseCommand
      */
     protected $description = 'Show current preferences settings.';
 
-    
     /**
      * The command input validation to run.
-     * 
+     *
      * @return array
      */
     public function rules()
@@ -41,7 +39,7 @@ class ShowPreferencesCommand extends BaseCommand
 
     /**
      * The command input transformers to run.
-     * 
+     *
      * @return array
      */
     public function transformers()
@@ -53,7 +51,7 @@ class ShowPreferencesCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     * 
+     *
      * @return array
      */
     public function requirements()
@@ -67,22 +65,22 @@ class ShowPreferencesCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
     {
         $preferences = DB::table('preferences')->get();
 
-        $headers = ["Name", "Value"];
+        $headers = ['Name', 'Value'];
         $rows = [];
 
-        foreach ($preferences as $preference){
+        foreach ($preferences as $preference) {
             $rows[] = [$preference->name, $preference->value];
         }
 
-        if(empty($rows)){
-            $this->exit("No preferences saved.", level: "warn");
+        if (empty($rows)) {
+            $this->exit('No preferences saved.', level: 'warn');
         }
 
         $this->table($headers, $rows);

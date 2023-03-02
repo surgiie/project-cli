@@ -30,7 +30,6 @@ if (! function_exists('project_path')) {
     /**
      * Create a path relavent to the .project directory.
      *
-     * @param string $path
      * @return string
      */
     function project_path(string $path = '')
@@ -39,7 +38,7 @@ if (! function_exists('project_path')) {
         if ($basePath) {
             $base = rtrim($basePath, '/').'/';
         } else {
-            $user = posix_getpwuid(posix_geteuid())["name"];
+            $user = posix_getpwuid(posix_geteuid())['name'];
             $base = rtrim("/home/$user", '/').'/.project/';
         }
 
@@ -52,10 +51,6 @@ if (! function_exists('project_path')) {
 if (! function_exists('to_local_datetime')) {
     /**
      * Return a local timezone carbon instance
-     *
-     * @param mixed $value
-     * @param string $tz
-     * @return \Carbon\Carbon
      */
     function to_local_datetime(mixed $value, string $tz = 'America/Indiana/Indianapolis'): Carbon
     {

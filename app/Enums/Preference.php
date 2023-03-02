@@ -18,9 +18,6 @@ enum Preference
 
     /**
      * Determine if there is a preference with this name.
-     *
-     * @param string $name
-     * @return boolean
      */
     public static function has(string $name): bool
     {
@@ -34,7 +31,6 @@ enum Preference
     /**
      * Validate that the status order value is valid for save.
      *
-     * @param string $value
      * @return void
      */
     public static function validateStatusOrder(string $value)
@@ -53,16 +49,16 @@ enum Preference
             throw new ExitCommandException("Given list of status does not match table count of: $recordCount");
         }
     }
+
     /**
      * Validate that the timezone value is valid for save.
      *
-     * @param string $value
      * @return void
      */
     public static function validateDateTimezone(string $value)
     {
-        $tzs = timezone_identifiers_list ();
-        if(!in_array($value, $tzs)){
+        $tzs = timezone_identifiers_list();
+        if (! in_array($value, $tzs)) {
             throw new ExitCommandException("Invalid timezone '$value'");
         }
     }

@@ -27,7 +27,7 @@ class NewTagCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     * 
+     *
      * @return array
      */
     public function requirements()
@@ -38,9 +38,10 @@ class NewTagCommand extends BaseCommand
             },
         ]);
     }
+
     /**
      * The input transformer rules.
-     * 
+     *
      * @return int
      */
     public function transformers()
@@ -49,9 +50,10 @@ class NewTagCommand extends BaseCommand
             'name' => 'trim',
         ];
     }
+
     /**
      * The input validation rules.
-     * 
+     *
      * @return int
      */
     public function rules()
@@ -68,7 +70,7 @@ class NewTagCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
@@ -87,12 +89,12 @@ class NewTagCommand extends BaseCommand
         });
 
         $success = $task->succeeded();
-        if($success){
+        if ($success) {
             $this->newLine();
-            
+
             $this->components->info("The task tag '$name' was created successfully.");
         }
-        
-        return $success ? 0: 1;
+
+        return $success ? 0 : 1;
     }
 }

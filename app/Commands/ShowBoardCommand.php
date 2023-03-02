@@ -28,7 +28,7 @@ class ShowBoardCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     * 
+     *
      * @return array
      */
     public function requirements()
@@ -42,7 +42,7 @@ class ShowBoardCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
@@ -53,22 +53,19 @@ class ShowBoardCommand extends BaseCommand
         $cachedTasks = [];
         $emptyStatuses = [];
 
-        $statuses = $this->getPreferenceOrDefault(Preference::STATUS_ORDER, DB::table('statuses')->pluck('display', 'name')->all(), split: ",");
+        $statuses = $this->getPreferenceOrDefault(Preference::STATUS_ORDER, DB::table('statuses')->pluck('display', 'name')->all(), split: ',');
         $totalStatuses = count($statuses);
 
-        if($totalStatuses == 0){
-            $this->exit("No tasks to show", level: "warn");
-            
+        if ($totalStatuses == 0) {
+            $this->exit('No tasks to show', level: 'warn');
         }
-     
+
         $wordWrap = floor((new Terminal)->getWidth() / $totalStatuses) / 2;
-       
 
         // in order to display the tasks by column and status in a table, we need to extract rows into a format
         // where each row item corresponds to the column status.
 
         while (! $done) {
-          
             foreach ($statuses as $status) {
                 $status = Str::kebab($status);
                 $cachedTasks[$status] = $cachedTasks[$status] ?? ($cachedTasks[$status] = DB::table('tasks')->where('status', $status)->get()->toArray());
@@ -76,8 +73,7 @@ class ShowBoardCommand extends BaseCommand
                 if (count($cachedTasks[$status]) == 0 && ! in_array($status, $emptyStatuses)) {
                     $emptyStatuses[] = $status;
                 }
-                
-           
+
                 // if the row length has hit total number of statues, we're done with this row, empty and start over.
                 if (count($row) == $totalStatuses) {
                     $rows[] = $row;
@@ -108,7 +104,7 @@ class ShowBoardCommand extends BaseCommand
             'statuses' => $statuses,
             'wordWrap' => $wordWrap,
         ]);
- 
+
         return 0;
     }
 }

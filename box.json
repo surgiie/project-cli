@@ -5,7 +5,6 @@
         "bootstrap",
         "database",
         "resources",
-        "storage", 
         "config",
         "vendor"
     ],

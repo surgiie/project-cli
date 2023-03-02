@@ -17,7 +17,7 @@ class EditTaskCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'edit:task 
+    protected $signature = 'edit:task
                                 {description? : The description of the task.}
                                 {--id= : The id of the task to edit.}
                                 {--title= : The title of the task.}
@@ -45,7 +45,7 @@ class EditTaskCommand extends BaseCommand
         ];
     }
 
-     /**
+    /**
      * The command requirements to check.
      *
      * @return array
@@ -89,16 +89,16 @@ class EditTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle()
     {
-        if(!$this->data->get("title") && !$this->data->get("status") && !$this->data->get("tags") && !$this->data->get("description") && !$this->data->get("due_date")){
-            $this->exit("No update data given, nothing to do.", level: "warn");
+        if (! $this->data->get('title') && ! $this->data->get('status') && ! $this->data->get('tags') && ! $this->data->get('description') && ! $this->data->get('due_date')) {
+            $this->exit('No update data given, nothing to do.', level: 'warn');
         }
 
-        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules'=> ['integer']]))->first();
+        $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules' => ['integer']]))->first();
 
         if (is_null($task)) {
             $this->exit("Task with id '$id' does not exist");
@@ -116,12 +116,12 @@ class EditTaskCommand extends BaseCommand
             $description = $this->data->get('description');
             $dueDate = $this->data->get('due-date');
             $tags = implode(',', $this->data->get('tag', []));
-            
+
             $result = DB::table('tasks')->where('id', $id)->update([
                 'title' => $title ?: $task->title,
                 'description' => $description ?: $task->description,
                 'status' => $status ?: Str::kebab($this->data->get('status')),
-                'tags' => empty($tags) ?$task->tags: $tags,
+                'tags' => empty($tags) ? $task->tags : $tags,
                 'due_date' => $dueDate ? (new Carbon($dueDate))->toDateTimeString() : $task->due_date,
                 'updated_at' => now(),
             ]);
@@ -129,12 +129,12 @@ class EditTaskCommand extends BaseCommand
             return $result != 0;
         });
 
-        if($success = $task->succeeded()){
+        if ($success = $task->succeeded()) {
             $this->newLine();
 
             $this->components->info('Task was updated successfully.');
         }
 
-        return $success ? 0: 1;
+        return $success ? 0 : 1;
     }
 }

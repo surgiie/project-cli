@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Enums\Preference;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Surgiie\Blade\Blade;
 use Surgiie\Console\Command as ConsoleCommand;
 use Symfony\Component\Process\Process;
 
@@ -12,10 +13,26 @@ abstract class BaseCommand extends ConsoleCommand
 {
     /**
      * The cached user preferences.
-     *
-     * @var array|null
      */
     protected ?array $preferences = null;
+
+    /**
+     * Return the Blade instance for rendering files with.
+     */
+    protected function blade(): Blade
+    {
+        $blade = parent::blade();
+
+        if ($compilePath = $this->data->get('compile-path')) {
+            $blade->setCompiledPath($compilePath);
+        }
+
+        if ($this->app->runningUnitTests()) {
+            $blade->setCompiledPath(base_path('tests/.compiled'));
+        }
+
+        return $blade;
+    }
 
     /**
      * Check requirements for the cli to work properly.
@@ -36,7 +53,7 @@ abstract class BaseCommand extends ConsoleCommand
     /**
      * Open a tmp file using the given editor binary string.
      *
-     * @param string $existingContent
+     * @param  string  $existingContent
      * @return string
      */
     protected function openTmpFile($existingContent = '')
@@ -62,7 +79,6 @@ abstract class BaseCommand extends ConsoleCommand
     /**
      * Configure the database connection for the current selected board.
      *
-     * @param string $name
      * @return void
      */
     protected function configureDatabaseConnection(string $name = '')
@@ -85,9 +101,8 @@ abstract class BaseCommand extends ConsoleCommand
       /**
        * Get preference value or default.
        *
-       * @param \App\Enums\Preference $preference
-       * @param mixed $default
-       * @param boolean $split
+       * @param  mixed  $default
+       * @param  bool  $split
        * @return void
        */
       public function getPreferenceOrDefault(Preference $preference, $default, bool|string $split = false)
@@ -104,7 +119,6 @@ abstract class BaseCommand extends ConsoleCommand
     /**
      * Normalize name to snake & uppercase.
      *
-     * @param string $name
      * @return string
      */
     protected function normalizeToUpperSnakeCase(string $name)
