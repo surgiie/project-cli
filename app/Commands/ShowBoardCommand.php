@@ -28,10 +28,8 @@ class ShowBoardCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     *
-     * @return array
      */
-    public function requirements()
+    public function requirements(): array
     {
         return array_merge(parent::requirements(), [
             function () {
@@ -42,10 +40,8 @@ class ShowBoardCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $row = [];
         $rows = [];

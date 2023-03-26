@@ -22,10 +22,8 @@ class SelectBoardCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $name = $this->data->get('name');
 

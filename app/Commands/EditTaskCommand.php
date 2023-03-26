@@ -5,13 +5,9 @@ namespace App\Commands;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class EditTaskCommand extends BaseCommand
 {
-    use WithTransformers, WithValidation;
-
     /**
      * The signature of the command.
      *
@@ -34,7 +30,7 @@ class EditTaskCommand extends BaseCommand
     protected $description = 'Edit a task.';
 
     /**Transform inputs.*/
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'tags.*' => 'trim',
@@ -61,10 +57,8 @@ class EditTaskCommand extends BaseCommand
 
     /**
      * The input validation rules.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'due-date' => ['nullable', 'date'],
@@ -89,10 +83,8 @@ class EditTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         if (! $this->data->get('title') && ! $this->data->get('status') && ! $this->data->get('tags') && ! $this->data->get('description') && ! $this->data->get('due_date')) {
             $this->exit('No update data given, nothing to do.', level: 'warn');

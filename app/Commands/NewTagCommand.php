@@ -4,13 +4,9 @@ namespace App\Commands;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class NewTagCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers;
-
     /**
      * The signature of the command.
      *
@@ -44,7 +40,7 @@ class NewTagCommand extends BaseCommand
      *
      * @return int
      */
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'name' => 'trim',
@@ -56,7 +52,7 @@ class NewTagCommand extends BaseCommand
      *
      * @return int
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [function ($_, $name, $fail) {
@@ -70,10 +66,8 @@ class NewTagCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $name = $this->data->get('name');
 

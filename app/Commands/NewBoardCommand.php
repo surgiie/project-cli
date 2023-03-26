@@ -3,13 +3,9 @@
 namespace App\Commands;
 
 use Illuminate\Support\Str;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class NewBoardCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers;
-
     /**
      * The signature of the command.
      *
@@ -26,10 +22,8 @@ class NewBoardCommand extends BaseCommand
 
     /**
      * The input transformer rules.
-     *
-     * @return array
      */
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'name' => 'trim',
@@ -38,10 +32,8 @@ class NewBoardCommand extends BaseCommand
 
     /**
      * The input validation rules.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [function ($_, $name, $fail) {
@@ -54,10 +46,8 @@ class NewBoardCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         @mkdir(project_path('boards'), recursive: true);
 

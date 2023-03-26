@@ -4,13 +4,9 @@ namespace App\Commands;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class NewStatusCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers;
-
     /**
      * The signature of the command.
      *
@@ -26,7 +22,7 @@ class NewStatusCommand extends BaseCommand
     protected $description = 'Create a new task status.';
 
     /**Transform inputs.*/
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'name' => 'trim',
@@ -49,10 +45,8 @@ class NewStatusCommand extends BaseCommand
 
     /**
      * The input validation rules.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [function ($_, $name, $fail) {
@@ -66,10 +60,8 @@ class NewStatusCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $name = $this->data->get('name');
 

@@ -5,12 +5,10 @@ namespace App\Commands;
 use App\Concerns\FormatsForTableOutput;
 use App\Enums\Preference;
 use Illuminate\Support\Facades\DB;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class ShowTaskCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers, FormatsForTableOutput;
+    use FormatsForTableOutput;
 
     /**
      * The signature of the command.
@@ -28,10 +26,8 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * The input validation rules.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'id' => ['numeric'],
@@ -40,10 +36,8 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * The command input transformers to run.
-     *
-     * @return array
      */
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'id' => ['intval'],
@@ -52,10 +46,8 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * The command input validation to run.
-     *
-     * @return array
      */
-    public function requirements()
+    public function requirements(): array
     {
         return array_merge(parent::requirements(), [
             function () {
@@ -66,10 +58,8 @@ class ShowTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $task = DB::table('tasks')->where('id', $id = $this->getOrAskForInput('id', ['rules' => ['integer']]))->first();
 
@@ -82,5 +72,7 @@ class ShowTaskCommand extends BaseCommand
             'boardName' => get_selected_board_name(),
             'timezone' => $this->getPreferenceOrDefault(Preference::DATE_TIMEZONE, 'America/Indiana/Indianapolis'),
         ]);
+
+        return 0;
     }
 }

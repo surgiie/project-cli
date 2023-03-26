@@ -5,19 +5,15 @@ namespace App\Commands;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class NewTaskCommand extends BaseCommand
 {
-    use WithTransformers, WithValidation;
-
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'new:task 
+    protected $signature = 'new:task
                                 {description? : The description of the task.}
                                 {--title= : The title of the task.}
                                 {--due-date= : The due date for the task.}
@@ -34,10 +30,8 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * The transfomers to run against inputs.
-     *
-     * @return array
      */
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'tags.*' => 'trim',
@@ -50,10 +44,8 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * The input validation rules.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'due-date' => ['nullable', 'date'],
@@ -78,10 +70,8 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     *
-     * @return array
      */
-    public function requirements()
+    public function requirements(): array
     {
         return array_merge(parent::requirements(), [
             function () {
@@ -92,10 +82,8 @@ class NewTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         if (! $this->data->get('description') && $this->data->get('editor')) {
             $this->data->put('description', $this->openTmpFile());

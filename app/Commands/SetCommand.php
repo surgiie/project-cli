@@ -5,13 +5,9 @@ namespace App\Commands;
 use App\Enums\Preference;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class SetCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers;
-
     /**
      * The signature of the command.
      *
@@ -29,10 +25,8 @@ class SetCommand extends BaseCommand
 
     /**
      * The command transformers to apply to input/options.
-     *
-     * @return array
      */
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'name' => ['trim', fn ($v) => $this->normalizeToUpperSnakeCase($v)],
@@ -42,10 +36,8 @@ class SetCommand extends BaseCommand
 
     /**
      * The command input validation to run.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return ['name' => function ($_, $v, $fail) {
             if (! Preference::has($v)) {
@@ -56,10 +48,8 @@ class SetCommand extends BaseCommand
 
     /**
      * The command requirements to run.
-     *
-     * @return array
      */
-    public function requirements()
+    public function requirements(): array
     {
         return array_merge(parent::requirements(), [
             function () {
@@ -70,10 +60,8 @@ class SetCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
         $name = $this->data->get('name');
         $value = $this->data->get('value');

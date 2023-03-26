@@ -4,12 +4,10 @@ namespace App\Commands;
 
 use App\Concerns\FormatsForTableOutput;
 use Illuminate\Support\Facades\DB;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class ShowPreferencesCommand extends BaseCommand
 {
-    use WithValidation, WithTransformers, FormatsForTableOutput;
+    use FormatsForTableOutput;
 
     /**
      * The signature of the command.
@@ -39,10 +37,8 @@ class ShowPreferencesCommand extends BaseCommand
 
     /**
      * The command input transformers to run.
-     *
-     * @return array
      */
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'id' => ['intval'],

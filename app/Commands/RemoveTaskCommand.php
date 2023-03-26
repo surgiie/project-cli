@@ -3,13 +3,9 @@
 namespace App\Commands;
 
 use Illuminate\Support\Facades\DB;
-use Surgiie\Console\Concerns\WithTransformers;
-use Surgiie\Console\Concerns\WithValidation;
 
 class RemoveTaskCommand extends BaseCommand
 {
-    use WithTransformers, WithValidation;
-
     /**
      * The signature of the command.
      *
@@ -25,7 +21,7 @@ class RemoveTaskCommand extends BaseCommand
     protected $description = 'Remove tasks by id.';
 
     /**Transform inputs.*/
-    public function transformers()
+    public function transformers(): array
     {
         return [
             'id.*' => 'trim',
@@ -34,10 +30,8 @@ class RemoveTaskCommand extends BaseCommand
 
     /**
      * The command requirements to check.
-     *
-     * @return array
      */
-    public function requirements()
+    public function requirements(): array
     {
         return array_merge(parent::requirements(), [
             function () {
@@ -61,10 +55,8 @@ class RemoveTaskCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $failures = false;
 
